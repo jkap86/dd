@@ -4,16 +4,18 @@ h1 {
   text-shadow: 0 0 .1em var(--secondary-color);
   text-align: center;
   margin-top: 0;
+  font-size: 3vh;
 }
 
 h2 {
   color: var(--fourth-color);
   text-shadow: 0 0 .25em var(--third-color);
   text-align: center;
+  font-size: 2vh;
 }
 
 div.nav {
-  height: 25vh;
+  height: fit-content;
   text-align: center;
 }
 
@@ -22,6 +24,8 @@ div.nav {
   color: var(--fifth-color);
   background-color: transparent;
   border: none;
+  font-size: 2vh;
+  float: left;
 }
 
 div.view_scrollable {
@@ -148,7 +152,12 @@ table.rostercolumn {
   color: var(--third-color);
   margin: 1em;
 }
-
+div.nav_container {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  overflow: scroll;
+}
 
 button.nav {
   background-color: var(--third-color);
@@ -157,9 +166,9 @@ button.nav {
   color: var(--fifth-color);
   font-size: 100%;
   font-weight: 900;
-  margin: .25em;
-  padding: .5em;
-  height: 3em;
+  margin: .5vh;
+  padding: 1vh .5em;
+  font-size: 1em;
 }
 
 button.active {
@@ -171,7 +180,7 @@ button.active {
 .slidercontainer {
   display: flex;
   justify-content: center;
-  font-size: 100%;
+  font-size: 1em;
   padding: 0.5em;
 }
 
@@ -190,7 +199,7 @@ span.option button {
 
 span.option button,
 span.selected button {
-  font-size: 100%;
+  font-size: 1em;
   padding: 0.5em;
   color: var(--fifth-color);
   font-weight: 900;

@@ -58,7 +58,7 @@ const View = () => {
     }
     const matchPick = (season, round) => {
         let value = dv.find(x => `${season}mid${round}` === x.searchName.slice(0, 8))
-        
+
         value = value === undefined ? 0 : value.value
         return value
     }
@@ -81,11 +81,11 @@ const View = () => {
 
 
     return <>
-        <Link to="/" className="link clickable">Home</Link>
         <div className="nav">
+            <Link to="/" className="link clickable">Home</Link>
             <h1>Dynasty Dashboard</h1>
             <h2>{user.display_name}</h2>
-            <div>
+            <div className="nav_container">
                 <button onClick={() => setActiveTab('Leagues')} className={activeTab === 'Leagues' ? 'active nav clickable' : 'nav clickable'}>Leagues</button>
                 <button onClick={() => setActiveTab('Players')} className={activeTab === 'Players' ? 'active nav clickable' : 'nav clickable'}>Players</button>
                 <button onClick={() => setActiveTab('Leaguemates')} className={activeTab === 'Leaguemates' ? 'active nav clickable' : 'nav clickable'}>Leaguemates</button>
