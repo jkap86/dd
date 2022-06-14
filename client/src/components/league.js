@@ -54,32 +54,32 @@ const League = (props) => {
         }
         switch (props.group_age) {
             case 'All':
-                age = roster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].age !== undefined).length
                 break;
             case 'Starters':
-                age = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).length
                 break;
             case 'Bench':
-                age = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).length
                 break;
             case 'QB':
-                age = roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).length
                 break;
             case 'RB':
-                age = roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).length
                 break;
             case 'WR':
-                age = roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).length
                 break;
             case 'TE':
-                age = roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).length
+                age = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).length
                 break;
             default:
                 age = 0
@@ -100,8 +100,8 @@ const League = (props) => {
                     <th>Record</th>
                     <th>Points For</th>
                     <th>Points Against</th>
-                    <th>Value</th>
-                    <th>Age</th>
+                    <th>{props.group_value} Value</th>
+                    <th>{props.group_age} Age</th>
                 </tr>
                 {rosters === null ? null : rosters.sort((a, b) => b.value - a.value).map((roster, index) =>
                     <React.Fragment key={index}>

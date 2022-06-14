@@ -193,7 +193,7 @@ const Leagues = (props) => {
                                     {league.userRoster.players === null ? null : getAge(league.league_id)}
                                 </td>
                             </tr>
-                            {league.isRostersHidden || league.userRoster.players === null ? null :
+                            {league.isRostersHidden ? null :
                                 <tr>
                                     <td colSpan={14}>
                                         <League
