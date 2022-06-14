@@ -169,7 +169,6 @@ div.nav_container {
   width: 100%;
   display: inline-flex;
   justify-content: center;
-  overflow: scroll;
 }
 
 button.nav {
@@ -358,4 +357,7 @@ select {
   font-size: inherit;
   border: unset;
   text-align: right;
+}
+option {
+  background-color: var(--secondary-color);
 }
