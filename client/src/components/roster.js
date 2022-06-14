@@ -25,7 +25,7 @@ const Roster = (props) => {
                                         <tr>
                                             <th>Starters</th>
                                             <th>
-                                                {props.roster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)}
+                                                {props.roster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                             </th>
                                         </tr>
                                         {props.roster.starters.map((player, index) =>
@@ -53,7 +53,7 @@ const Roster = (props) => {
                                                 {props.roster.players.filter(x => !props.roster.starters.includes(x) && (props.roster.taxi === null ||
                                                     !props.roster.taxi.includes(x)) && (props.roster.reserve === null ||
                                                         !props.roster.reserve.includes(x))).reduce((acc, cur) =>
-                                                            acc + parseInt(props.matchPlayer_DV(cur)), 0)}
+                                                            acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                             </th>
                                         </tr>
                                         {props.roster.players.filter(x => !props.roster.starters.includes(x) && (props.roster.taxi === null ||
@@ -79,7 +79,7 @@ const Roster = (props) => {
                                             <tr>
                                                 <th>Taxi</th>
                                                 <th>
-                                                    {props.roster.taxi.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)}
+                                                    {props.roster.taxi.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                                 </th>
                                             </tr>
                                             {props.roster.taxi.map((player, index) =>
@@ -103,7 +103,7 @@ const Roster = (props) => {
                                             <tr>
                                                 <th>IR</th>
                                                 <th>
-                                                    {props.roster.reserve.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)}
+                                                    {props.roster.reserve.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                                 </th>
                                             </tr>
                                             {props.roster.reserve.map((player, index) =>
@@ -123,6 +123,10 @@ const Roster = (props) => {
                                 }
                                 <table className='rostercolumn'>
                                     <tbody>
+                                        <tr>
+                                            <th>Draft Picks</th>
+                                            <th>{props.roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0).toLocaleString("en-US")}</th>
+                                        </tr>
                                         {props.roster.draft_picks.sort((a, b) => a.season - b.season || a.round - b.round).map(pick =>
                                             <tr>
                                                 <td>{pick.season} Round {pick.round}</td>

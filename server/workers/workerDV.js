@@ -13,6 +13,7 @@ const get_proj = async () => {
             name: name,
             searchName: searchName,
             value: $(element).find('.value p').text(),
+            updated_value: $(element).find('.value p').text(),
             team: $(element).find('.player-name span.player-team').text(),
             position: $(element).find('div.position-team p.position').text().slice(0, 2)
         })

@@ -7,6 +7,7 @@ import PlayerShares from "./playerShares";
 import allPlayers from '../allPlayers.json';
 import Leaguemates from "./leaguemates";
 import Lineups from "./lineups";
+import PlayerInfo from "./playerInfo";
 
 const View = () => {
     const params = useParams()
@@ -16,13 +17,7 @@ const View = () => {
     const [activeTab, setActiveTab] = useState('Leagues')
     const [filters, setFilters] = useState({ 'r_d': 'All', 'b_s': 'All' })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const dv = await axios.get('/dynastyvalues')
-            setDv(dv.data)
-        }
-        fetchData()
-    }, [])
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,7 +32,6 @@ const View = () => {
                     username: params.username
                 }
             })
-            console.log(l.data.sort((a, b) => a.index - b.index))
             setLeagues(l.data)
         }
         fetchData()
@@ -48,9 +42,9 @@ const View = () => {
             return null
         } else {
             if (dv.find(x => x.searchName === allPlayers[player].search_full_name)) {
-                return dv.find(x => x.searchName === allPlayers[player].search_full_name).value
+                return dv.find(x => x.searchName === allPlayers[player].search_full_name).updated_value
             } else if (dv.find(x => allPlayers[player].search_full_name !== undefined && x.searchName.slice(-5, -2) === allPlayers[player].search_full_name.slice(-5, -2) && x.searchName.slice(0, 3) === allPlayers[player].search_full_name.slice(0, 3))) {
-                return dv.find(x => x.searchName.slice(-5, -2) === allPlayers[player].search_full_name.slice(-5, -2) && x.searchName.slice(0, 3) === allPlayers[player].search_full_name.slice(0, 3)).value
+                return dv.find(x => x.searchName.slice(-5, -2) === allPlayers[player].search_full_name.slice(-5, -2) && x.searchName.slice(0, 3) === allPlayers[player].search_full_name.slice(0, 3)).updated_value
             } else {
                 return 0
             }
@@ -82,8 +76,14 @@ const View = () => {
 
     return <>
         <div className="nav">
-            <Link to="/" className="link clickable">Home</Link>
-            <h1>Dynasty Dashboard</h1>
+            <h1>
+                <Link to="/" className="link clickable">Home</Link>
+                Dynasty Dashboard
+                <button className={activeTab === 'All Players' ? "allplayers active" : "allplayers"} onClick={() => setActiveTab('All Players')}>
+                    All Players
+                </button>
+            </h1>
+
             <h2>{user.display_name}</h2>
             <div className="nav_container">
                 <button onClick={() => setActiveTab('Leagues')} className={activeTab === 'Leagues' ? 'active nav clickable' : 'nav clickable'}>Leagues</button>
@@ -107,6 +107,11 @@ const View = () => {
                     active="All"
                 />
             </div>
+        </div>
+        <div hidden={activeTab === 'All Players' ? false : true}> 
+            <PlayerInfo
+                sendDV={(data) => setDv(data)}
+            />
         </div>
         {activeTab === 'Leagues' ?
             leagues.length > 0 ?
