@@ -132,6 +132,7 @@ const Leaguemates = (props) => {
                                         leaguemate={leaguemate}
                                         user={props.user}
                                         matchPlayer_DV={props.matchPlayer_DV}
+                                        matchPick={props.matchPick}
                                     />
                                 </td>
                             </tr>

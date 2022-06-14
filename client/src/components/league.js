@@ -17,7 +17,8 @@ const League = (props) => {
     const rosters = league.rosters === undefined ? null : league.rosters.map(roster => {
         return {
             ...roster,
-            value: roster.players === null ? 0 : roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+            value: roster.players === null ? 0 : roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) + 
+                roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
         }
     })
 
@@ -60,6 +61,7 @@ const League = (props) => {
                                     <Roster
                                         roster={roster}
                                         matchPlayer_DV={props.matchPlayer_DV}
+                                        matchPick={props.matchPick}
                                     />
                                 </td>
                             </tr>

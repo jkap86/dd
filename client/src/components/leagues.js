@@ -83,7 +83,8 @@ const Leagues = (props) => {
                                 <td colSpan={2}>
                                     {league.userRoster.players === null ?
                                         null
-                                        : league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
+                                        : (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                                            league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
                                     }
                                 </td>
                             </tr>
@@ -93,6 +94,7 @@ const Leagues = (props) => {
                                         <League
                                             league={league}
                                             matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
                                         />
                                     </td>
                                 </tr>

@@ -76,12 +76,14 @@ const LeaguemateLeagues = (props) => {
                                     <Roster 
                                         roster={league.rosters.find(x => x.username === props.leaguemate.username)}
                                         matchPlayer_DV={props.matchPlayer_DV}
+                                        matchPick={props.matchPick}
                                     />
                                 </td>
                                 <td colSpan={6} className="top">
                                     <Roster 
                                         roster={league.userRoster}
                                         matchPlayer_DV={props.matchPlayer_DV}
+                                        matchPick={props.matchPick}
                                     />
                                 </td>
                             </tr>

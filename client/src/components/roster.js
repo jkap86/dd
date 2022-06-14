@@ -1,6 +1,7 @@
 import allPlayers from '../allPlayers.json';
 import { useState } from 'react';
 
+
 const Roster = (props) => {
     const [tab, setTab] = useState('Lineup')
     return <>
@@ -10,7 +11,10 @@ const Roster = (props) => {
                     <th>{props.roster.username}</th>
                 </tr>
                 <tr>
-                    <th>{props.roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)}</th>
+                    <th>
+                        {(props.roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                            props.roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")}
+                    </th>
                 </tr>
                 <tr>
                     <td className='flex top'>
@@ -117,6 +121,20 @@ const Roster = (props) => {
                                         </tbody>
                                     </table>
                                 }
+                                <table className='rostercolumn'>
+                                    <tbody>
+                                        {props.roster.draft_picks.sort((a, b) => a.season - b.season || a.round - b.round).map(pick =>
+                                            <tr>
+                                                <td>{pick.season} Round {pick.round}</td>
+                                                <td className='black'>
+                                                    <em style={{ filter: `invert(${(props.matchPick(pick.season, pick.round) / 200) + 50}%) brightness(2)` }}>
+                                                        {props.matchPick(pick.season, pick.round)}
+                                                    </em>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
                             </>
                         }
                     </td>

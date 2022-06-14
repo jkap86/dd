@@ -264,6 +264,7 @@ const PlayerShares = (props) => {
                                                 leagues_taken={player.leagues_taken}
                                                 leagues_available={player.leagues_available}
                                                 matchPlayer_DV={props.matchPlayer_DV}
+                                                matchPick={props.matchPick}
                                             />
                                         </td>
                                     </tr>

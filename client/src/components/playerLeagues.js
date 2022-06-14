@@ -75,7 +75,8 @@ const PlayerLeagues = (props) => {
                                 <td>
                                     {league.userRoster.players === null ?
                                         null
-                                        : league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
+                                        : (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) + 
+                                        league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
                                     }
                                 </td>
                             </tr>
@@ -85,6 +86,7 @@ const PlayerLeagues = (props) => {
                                         <Roster
                                             roster={league.userRoster}
                                             matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
                                         />
                                     </td>
                                 </tr>
@@ -125,7 +127,8 @@ const PlayerLeagues = (props) => {
                                 <td>
                                     {league.userRoster.players === null ?
                                         null
-                                        : league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
+                                        : (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) + 
+                                        league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
                                     }
                                 </td>
                             </tr>
@@ -135,12 +138,14 @@ const PlayerLeagues = (props) => {
                                         <Roster
                                             roster={league.userRoster}
                                             matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
                                         />
                                     </td>
                                     <td colSpan={4} className="top">
                                         <Roster
                                             roster={league.rosters.find(x => x.players.includes(props.player))}
                                             matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
                                         />
                                     </td>
                                 </tr>
@@ -179,7 +184,8 @@ const PlayerLeagues = (props) => {
                                 <td>
                                     {league.userRoster.players === null ?
                                         null
-                                        : league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
+                                        : (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) + 
+                                            league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
                                     }
                                 </td>
                             </tr>
@@ -189,6 +195,7 @@ const PlayerLeagues = (props) => {
                                         <Roster
                                             roster={league.userRoster}
                                             matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
                                         />
                                     </td>
                                 </tr>

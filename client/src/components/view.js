@@ -37,6 +37,7 @@ const View = () => {
                     username: params.username
                 }
             })
+            console.log(l.data.sort((a, b) => a.index - b.index))
             setLeagues(l.data)
         }
         fetchData()
@@ -54,6 +55,12 @@ const View = () => {
                 return 0
             }
         }
+    }
+    const matchPick = (season, round) => {
+        let value = dv.find(x => `${season}mid${round}` === x.searchName.slice(0, 8))
+        
+        value = value === undefined ? 0 : value.value
+        return value
     }
 
     const getSelection = (data) => {
@@ -106,6 +113,7 @@ const View = () => {
                 <Leagues
                     leagues={leagues.filter(x => x.isLeagueTypeHidden === false)}
                     matchPlayer_DV={matchPlayer_DV}
+                    matchPick={matchPick}
                 />
                 : <h1>Loading...</h1>
             : null
@@ -116,6 +124,7 @@ const View = () => {
                     leagues={leagues.filter(x => x.isLeagueTypeHidden === false)}
                     user={user}
                     matchPlayer_DV={matchPlayer_DV}
+                    matchPick={matchPick}
                 />
                 : <h1>Loading...</h1>
             : null
@@ -126,6 +135,7 @@ const View = () => {
                     leagues={leagues.filter(x => x.isLeagueTypeHidden === false)}
                     user={user}
                     matchPlayer_DV={matchPlayer_DV}
+                    matchPick={matchPick}
                 />
                 : <h1>Loading...</h1>
             : null
@@ -135,6 +145,7 @@ const View = () => {
                 <Lineups
                     leagues={leagues.filter(x => x.isLeagueTypeHidden === false)}
                     matchPlayer_DV={matchPlayer_DV}
+                    matchPick={matchPick}
                 />
                 : <h1>Loading...</h1>
             : null
