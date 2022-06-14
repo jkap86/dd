@@ -160,6 +160,11 @@ table.rostercolumn {
   color: var(--third-color);
   margin: 1em;
 }
+table.rostercolumn > tbody > tr > th {
+  color: var(--secondary-color);
+  font-weight: 500;
+  box-shadow: 0 0 .5em var(--primary-color);
+}
 div.nav_container {
   width: 100%;
   display: inline-flex;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Roster from "./roster";
 import emoji from '../emoji.png';
+import allPlayers from '../allPlayers.json';
 
 const League = (props) => {
     const [league, setLeague] = useState({})
@@ -15,10 +16,79 @@ const League = (props) => {
     }
 
     const rosters = league.rosters === undefined ? null : league.rosters.map(roster => {
+        let value;
+        let age;
+        let length;
+        switch (props.group_value) {
+            case 'Total':
+                value = roster.players === null ? 0 : roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                    roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+                break;
+            case 'Roster':
+                value = roster.players === null ? 0 : roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'Picks':
+                value = roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+                break;
+            case 'Starters':
+                value = roster.players === null ? 0 : roster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'Bench':
+                value = roster.players === null ? 0 : roster.players.filter(x => !roster.starters.includes(x)).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'QB':
+                value = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'QB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'RB':
+                value = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'RB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'WR':
+                value = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'WR').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case 'TE':
+                value = roster.players === null ? 0 : roster.players.filter(x => allPlayers[x].position === 'TE').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            default:
+                value = 0
+                break;
+        }
+        switch (props.group_age) {
+            case 'All':
+                age = roster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => allPlayers[x].age !== undefined).length
+                break;
+            case 'Starters':
+                age = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).length
+                break;
+            case 'Bench':
+                age = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).length
+                break;
+            case 'QB':
+                age = roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).length
+                break;
+            case 'RB':
+                age = roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).length
+                break;
+            case 'WR':
+                age = roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).length
+                break;
+            case 'TE':
+                age = roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = roster.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).length
+                break;
+            default:
+                age = 0
+                length = 1
+        }
         return {
             ...roster,
-            value: roster.players === null ? 0 : roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) + 
-                roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+            value: value,
+            age: length === 0 ? '-' : (age / length).toFixed(2)
         }
     })
 
@@ -31,6 +101,7 @@ const League = (props) => {
                     <th>Points For</th>
                     <th>Points Against</th>
                     <th>Value</th>
+                    <th>Age</th>
                 </tr>
                 {rosters === null ? null : rosters.sort((a, b) => b.value - a.value).map((roster, index) =>
                     <React.Fragment key={index}>
@@ -46,18 +117,19 @@ const League = (props) => {
                             <td colSpan={1} className="left">{roster.username}</td>
                             <td>{roster.wins}-{roster.losses}{roster.ties === 0 ? null : `-${roster.ties}`}</td>
                             <td>
-                                {`${parseFloat(`${roster.settings.fpts}.${roster.settings.fpts_decimal === undefined ? 0 : 
-                                roster.settings.fpts_decimal}`)}`}
+                                {`${parseFloat(`${roster.settings.fpts}.${roster.settings.fpts_decimal === undefined ? 0 :
+                                    roster.settings.fpts_decimal}`)}`}
                             </td>
                             <td>
-                                {roster.settings.fpts_against === undefined ? 0 : `${parseFloat(`${roster.settings.fpts_against}.${roster.settings.fpts_against_decimal === undefined ? 0 : 
-                                roster.settings.fpts_against_decimal}`)}`}
+                                {roster.settings.fpts_against === undefined ? 0 : `${parseFloat(`${roster.settings.fpts_against}.${roster.settings.fpts_against_decimal === undefined ? 0 :
+                                    roster.settings.fpts_against_decimal}`)}`}
                             </td>
                             <td>{roster.value.toLocaleString("en-US")}</td>
+                            <td>{roster.age}</td>
                         </tr>
                         {roster.isRosterHidden === true || roster.players === null ? null :
                             <tr>
-                                <td colSpan={6}>
+                                <td colSpan={7}>
                                     <Roster
                                         roster={roster}
                                         matchPlayer_DV={props.matchPlayer_DV}
