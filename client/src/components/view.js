@@ -80,7 +80,7 @@ const View = () => {
                 <Link to="/" className="link clickable">Home</Link>
                 Dynasty Dashboard
                 <button className={activeTab === 'All Players' ? "allplayers active" : "allplayers"} onClick={() => setActiveTab('All Players')}>
-                    All Players
+                    Dynasty Values
                 </button>
             </h1>
 

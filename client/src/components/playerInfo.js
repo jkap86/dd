@@ -83,10 +83,6 @@ const PlayerInfo = (props) => {
                     TE
                     <input className="clickable" name="TE" onChange={filterPosition} defaultChecked type="checkbox" />
                 </label>
-                <label className="script">
-                    Other
-                    <input className="clickable" name="Other" onChange={filterPosition} defaultChecked type="checkbox" />
-                </label>
                 <label className='script'>
                     Picks
                     <input className="clickable" name='PI' onChange={filterPosition} defaultChecked type="checkbox" />

@@ -343,3 +343,14 @@ label.script {
   border: none;
   width: 50%;
 }
+
+select {
+  background-color: inherit;
+  color: inherit;
+  font-weight: inherit;
+  width: fit-content;
+  max-width: 100%;
+  font-size: inherit;
+  border: unset;
+  text-align: right;
+}

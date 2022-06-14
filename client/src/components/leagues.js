@@ -2,12 +2,65 @@ import React, { useState } from "react";
 import League from "./league";
 import emoji from '../emoji.png';
 import Search from "./search";
+import allPlayers from '../allPlayers.json';
 
 const Leagues = (props) => {
+    const [group_value, setGroup_value] = useState('Total')
+    const [group_age, setGroup_age] = useState('Total')
     const [leagues, setLeagues] = useState([])
     if (leagues !== props.leagues) setLeagues(props.leagues)
-    
 
+    const getValue = (league_id) => {
+        let l = leagues
+        l = l.find(x => x.league_id === league_id)
+        let r;
+        switch (group_value) {
+            case "Total":
+                r = l.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                    l.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+                    break;
+            case "Roster":
+                r = l.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "Picks":
+                r = l.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+                break;
+            case "Starters": 
+                r = l.userRoster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "Bench":
+                r = l.userRoster.players.filter(x => !l.userRoster.starters.includes(x)).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            default:
+                r = 0
+        }
+        return r
+    }
+
+    const getAge = (league_id) => {
+        let l = leagues
+        l = l.find(x => x.league_id === league_id)
+        let length;
+        let r;
+        switch (group_age) {
+            case "Total":
+                r = l.userRoster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = l.userRoster.players.filter(x => allPlayers[x].age !== undefined).length
+                break;
+            case "Starters":
+                r = l.userRoster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = l.userRoster.starters.filter(x => x !== '0').length
+                break;
+            case "Bench":
+                r = l.userRoster.players.filter(x => !l.userRoster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
+                length = l.userRoster.players.filter(x => !l.userRoster.starters.includes(x)).length
+                break;
+            default:
+                r = 0
+                length = 1
+        }
+        return (r / length).toFixed(2)
+    }
 
     const showRosters = (league_id) => {
         let l = leagues
@@ -50,7 +103,24 @@ const Leagues = (props) => {
                         <th colSpan={2}>Record</th>
                         <th colSpan={2}>Points For</th>
                         <th colSpan={2}>Points Against</th>
-                        <th colSpan={2}>Value</th>
+                        <th colSpan={2}>
+                            <select onChange={(e) => setGroup_value(e.target.value)}>
+                                <option>Total</option>
+                                <option>Roster</option>
+                                <option>Picks</option>
+                                <option>Starters</option>
+                                <option>Bench</option>
+                            </select>
+                            Value
+                        </th>
+                        <th colSpan={2}>
+                            <select onChange={(e) => setGroup_age(e.target.value)}>
+                                <option>Total</option>
+                                <option>Starters</option>
+                                <option>Bench</option>
+                            </select>
+                            Age
+                        </th>
                     </tr>
                 </tbody>
                 <tbody className="slide_up">
@@ -81,16 +151,15 @@ const Leagues = (props) => {
                                 <td colSpan={2}>{league.fpts}</td>
                                 <td colSpan={2}>{league.fpts_against}</td>
                                 <td colSpan={2}>
-                                    {league.userRoster.players === null ?
-                                        null
-                                        : (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
-                                            league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
-                                    }
+                                    {league.userRoster.players === null ? null : getValue(league.league_id).toLocaleString("en-US")}
+                                </td>
+                                <td colSpan={2}>
+                                    {league.userRoster.players === null ? null : getAge(league.league_id)}
                                 </td>
                             </tr>
                             {league.isRostersHidden ? null :
                                 <tr>
-                                    <td colSpan={12}>
+                                    <td colSpan={14}>
                                         <League
                                             league={league}
                                             matchPlayer_DV={props.matchPlayer_DV}
