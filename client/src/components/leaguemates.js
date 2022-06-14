@@ -95,11 +95,19 @@ const Leaguemates = (props) => {
         <table className="main">
             <tbody className="fade_in sticky">
                 <tr>
+                    <th colSpan={3}></th>
+                    <th colSpan={3}>Leaguemate</th>
+                    <th colSpan={3}>{props.user.display_name}</th>
+                </tr>
+                <tr>
                     <th colSpan={2}>Leaguemate</th>
+                    <th>Count</th>
                     <th>Record</th>
                     <th>Points For</th>
                     <th>Points Against</th>
-                    <th>Count</th>
+                    <th>Record</th>
+                    <th>Points For</th>
+                    <th>Points Against</th>
                 </tr>
             </tbody>
             <tbody className="slide_up">
@@ -115,6 +123,7 @@ const Leaguemates = (props) => {
                                 />
                             </td>
                             <td className="left">{leaguemate.username}</td>
+                            <td>{leaguemate.count}</td>
                             <td>
                                 {leaguemate.wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
                                 {leaguemate.wins + leaguemate.losses === 0 ? null : 
@@ -123,11 +132,18 @@ const Leaguemates = (props) => {
                             </td>
                             <td>{leaguemate.fpts}</td>
                             <td>{leaguemate.fpts_against}</td>
-                            <td>{leaguemate.count}</td>
+                            <td>
+                                {leaguemate.wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
+                                {leaguemate.wins + leaguemate.losses === 0 ? null : 
+                                    <em>{(leaguemate.wins/(leaguemate.wins + leaguemate.losses)).toFixed(4)}</em>
+                                }    
+                            </td>
+                            <td>{leaguemate.fpts}</td>
+                            <td>{leaguemate.fpts_against}</td>
                         </tr>
                         {leaguemate.isLeaguesHidden ? null : 
                             <tr>
-                                <td colSpan={6}>
+                                <td colSpan={9}>
                                     <LeaguemateLeagues 
                                         leaguemate={leaguemate}
                                         user={props.user}

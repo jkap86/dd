@@ -38,12 +38,13 @@ const PlayerShares = (props) => {
     }
 
     const getSearched = (data) => {
+        console.log(data)
         const p = players
         if (data) {
             p.map(player => {
                 return player.isPlayerHidden = true
             })
-            p.filter(x => data === `${allPlayers[x.id].full_name} ${allPlayers[x.id].position} ${allPlayers[x.id].team === null ? 'FA' : allPlayers[x.id].team}`)
+            p.filter(player => data ===  `${allPlayers[player.id].full_name} ${allPlayers[player.id].position} ${allPlayers[player.id].team === null ? 'FA' : allPlayers[player.id].team}`)
                 .map(player => {
                     return player.isPlayerHidden = false
                 })

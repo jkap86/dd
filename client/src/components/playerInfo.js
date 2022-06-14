@@ -94,7 +94,7 @@ const PlayerInfo = (props) => {
             </div>
             <Search
                 list={dv.map(player => player.name)}
-                placeholder="Search Players"
+                placeholder="Search Players/Picks"
                 sendSearched={getSearched}
             />
         </div>
@@ -109,7 +109,7 @@ const PlayerInfo = (props) => {
                         <th>User Value</th>
                     </tr>
                     {dv.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) && !filters.types.includes(x.type)).map((player, index) =>
-                        <tr key={index}>
+                        <tr className="hover" key={index}>
                             <td>
                                 <img
                                     className="thumbnail"

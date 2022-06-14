@@ -127,8 +127,8 @@ const Roster = (props) => {
                                             <th>Draft Picks</th>
                                             <th>{props.roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0).toLocaleString("en-US")}</th>
                                         </tr>
-                                        {props.roster.draft_picks.sort((a, b) => a.season - b.season || a.round - b.round).map(pick =>
-                                            <tr>
+                                        {props.roster.draft_picks.sort((a, b) => a.season - b.season || a.round - b.round).map((pick,index)=>
+                                            <tr key={index}>
                                                 <td>{pick.season} Round {pick.round}</td>
                                                 <td className='black'>
                                                     <em style={{ filter: `invert(${(props.matchPick(pick.season, pick.round) / 200) + 50}%) brightness(2)` }}>
