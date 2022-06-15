@@ -63,7 +63,7 @@ const getLeagues = async (username, season, week) => {
         })
         const userRoster = rosters.data.find(x => x.owner_id === user.data.user_id)
 
-        if (userRoster !== undefined) {
+        if (userRoster !== undefined || matchups.data.length > 0) {
             const matchup = matchups.data.find(x => x.roster_id === userRoster.roster_id)
             const matchup_opponent = matchups.data.find(x => x.matchup_id === matchup.matchup_id && x.roster_id !== matchup.roster_id)
             const opponent = matchup_opponent === undefined ? 'orphan' : rosters.data.find(x => x.roster_id === matchup_opponent.roster_id)
@@ -77,7 +77,7 @@ const getLeagues = async (username, season, week) => {
                 userRoster: userRoster === undefined ? {} : userRoster,
                 users: users.data,
                 record: {
-                    wins: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined ?
+                    wins: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/W/g) === null ?
                         0 : userRoster.metadata.record.match(/W/g).length
                         : userRoster.settings.wins,
                     losses: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined ?
