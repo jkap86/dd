@@ -129,16 +129,14 @@ const Leaguemates = (props) => {
                             <td className="left">{leaguemate.username}</td>
                             <td>{leaguemate.count}</td>
                             <td>
-                                {leaguemate.wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
-                                {leaguemate.wins + leaguemate.losses === 0 ? null : 
+                                {leaguemate.wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`} {leaguemate.wins + leaguemate.losses === 0 ? null : 
                                     <em>{(leaguemate.wins/(leaguemate.wins + leaguemate.losses)).toFixed(4)}</em>
                                 }    
                             </td>
                             <td>{leaguemate.fpts}</td>
                             <td>{leaguemate.fpts_against}</td>
                             <td>
-                                {leaguemate.user_wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
-                                {leaguemate.wins + leaguemate.losses === 0 ? null : 
+                                {leaguemate.user_wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`} {leaguemate.wins + leaguemate.losses === 0 ? null : 
                                     <em>{(leaguemate.wins/(leaguemate.wins + leaguemate.losses)).toFixed(4)}</em>
                                 }    
                             </td>
