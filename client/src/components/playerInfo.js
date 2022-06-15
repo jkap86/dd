@@ -96,7 +96,7 @@ const PlayerInfo = (props) => {
         </div>
         <div className="view_scrollable">
             <table className="main">
-                <tbody>
+                <tbody className="fade_in sticky">
                     <tr>
                         <th colSpan={2}>Player</th>
                         <th>Position</th>
@@ -104,6 +104,8 @@ const PlayerInfo = (props) => {
                         <th>KTC Value</th>
                         <th>User Value</th>
                     </tr>
+                </tbody>
+                <tbody className="slide_up">
                     {dv.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) && !filters.types.includes(x.type)).map((player, index) =>
                         <tr className="hover" key={index}>
                             <td>

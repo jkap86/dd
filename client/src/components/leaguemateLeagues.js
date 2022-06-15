@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import emoji from '../emoji.png';
 import Roster from "./roster";
+import allPlayers from '../allPlayers.json';
 
 const LeaguemateLeagues = (props) => {
+    const [group_value, setGroup_value] = useState('Total')
     const [leagues, setLeagues] = useState([])
     if (props.leaguemate.leagues !== leagues) setLeagues(props.leaguemate.leagues)
 
@@ -12,6 +14,43 @@ const LeaguemateLeagues = (props) => {
             return league.isRostersHidden = !league.isRostersHidden
         })
         setLeagues([...l])
+    }
+
+    const getValue = (roster) => {
+        let r;
+        switch (group_value) {
+            case 'Total':
+                r = roster.players === null ? null : (roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                    roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
+                break;
+            case "Roster":
+                r = roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "Picks":
+                r = roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)
+                break;
+            case "Starters":
+                r = roster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "Bench":
+                r = roster.players.filter(x => !roster.starters.includes(x)).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "QB":
+                r = roster.players.filter(x => allPlayers[x].position === 'QB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "RB":
+                r = roster.players.filter(x => allPlayers[x].position === 'RB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "WR":
+                r = roster.players.filter(x => allPlayers[x].position === 'WR').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            case "TE":
+                r = roster.players.filter(x => allPlayers[x].position === 'TE').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                break;
+            default:
+                r = 0
+        }
+        return r
     }
 
     return <>
@@ -25,11 +64,37 @@ const LeaguemateLeagues = (props) => {
                 <tr>
                     <th colSpan={2}>Record</th>
                     <th colSpan={2}>Fantasy Points</th>
-                    <th colSpan={2}>Value</th>
+                    <th colSpan={2}>
+                        <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
+                            <option>Total</option>
+                            <option>Roster</option>
+                            <option>Picks</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        Value
+                    </th>
                     <th colSpan={4}>League</th>
                     <th colSpan={2}>Record</th>
                     <th colSpan={2}>Fantasy Points</th>
-                    <th colSpan={2}>Value</th>
+                    <th colSpan={2}>
+                        <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
+                            <option>Total</option>
+                            <option>Roster</option>
+                            <option>Picks</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        Value
+                    </th>
                 </tr>
                 {leagues.sort((a, b) => a.index - b.index).map((league, index) =>
                     <React.Fragment key={index}>
@@ -51,11 +116,7 @@ const LeaguemateLeagues = (props) => {
                                 {league.rosters.find(x => x.username === props.leaguemate.username).fpts_against}
                             </td>
                             <td colSpan={2}>
-                                {
-                                    league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null :
-                                        (league.rosters.find(x => x.username === props.leaguemate.username).players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
-                                            league.rosters.find(x => x.username === props.leaguemate.username).draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
-                                }
+                                {league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null : getValue(league.rosters.find(x => x.username === props.leaguemate.username)).toLocaleString("en-US")}
                             </td>
                             <td>
                                 <img
@@ -79,11 +140,7 @@ const LeaguemateLeagues = (props) => {
                                 {league.fpts_against}
                             </td>
                             <td colSpan={2}>
-                                {
-                                    league.userRoster.players === null ? null :
-                                        (league.userRoster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
-                                            league.userRoster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")
-                                }
+                                {league.userRoster.players === null ? null : getValue(league.userRoster).toLocaleString("en-US")}
                             </td>
                         </tr>
                         {league.isRostersHidden === true || league.userRoster.players === null ? null :

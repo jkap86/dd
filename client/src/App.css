@@ -295,7 +295,7 @@ p.record {
   opacity: .95;
 }
 
-tr.hover2:hover em {
+tr.hover2:hover em, tr.hover2.active em {
   filter: invert(1);
 }
 

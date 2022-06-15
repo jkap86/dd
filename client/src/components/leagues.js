@@ -104,7 +104,8 @@ const Leagues = (props) => {
             l.map(league => {
                 return league.isLeagueHidden = true
             })
-            l.filter(x => x.name === league_name).map(league => {
+            l.filter(x => x.name.trim()=== league_name.trim()).map(league => {
+                console.log(true)
                 return league.isLeagueHidden = false
             })
         } else {
