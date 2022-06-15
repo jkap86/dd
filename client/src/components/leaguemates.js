@@ -42,6 +42,8 @@ const Leaguemates = (props) => {
                     losses: roster.losses,
                     ties: roster.ties,
                     user_wins: league.record.wins,
+                    user_losses: league.record.losses,
+                    user_ties: league.record.ties,
                     avatar: roster.avatar
                 }
             })
@@ -61,6 +63,8 @@ const Leaguemates = (props) => {
                     count: 1,
                     leagues: [lm.league],
                     user_wins: lm.user_wins,
+                    user_losses: lm.user_losses,
+                    user_ties: lm.user_ties,
                     wins: lm.wins,
                     losses: lm.losses,
                     ties: lm.ties,
@@ -73,6 +77,8 @@ const Leaguemates = (props) => {
                 lmOccurrences[index].count++
                 lmOccurrences[index].leagues.push(lm.league)
                 lmOccurrences[index].user_wins = lmOccurrences[index].user_wins + lm.user_wins
+                lmOccurrences[index].user_losses = lmOccurrences[index].user_losses + lm.user_losses
+                lmOccurrences[index].user_ties = lmOccurrences[index].user_ties + lm.user_ties
                 lmOccurrences[index].wins = lmOccurrences[index].wins + lm.wins
                 lmOccurrences[index].losses = lmOccurrences[index].losses + lm.losses 
                 lmOccurrences[index].ties = lmOccurrences[index].ties + lm.ties 
@@ -136,8 +142,8 @@ const Leaguemates = (props) => {
                             <td>{leaguemate.fpts}</td>
                             <td>{leaguemate.fpts_against}</td>
                             <td>
-                                {leaguemate.user_wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`} {leaguemate.wins + leaguemate.losses === 0 ? null : 
-                                    <em>{(leaguemate.wins/(leaguemate.wins + leaguemate.losses)).toFixed(4)}</em>
+                                {leaguemate.user_wins}-{leaguemate.user_losses}{leaguemate.user_ties === 0 ? null : `-${leaguemate.user_ties}`} {leaguemate.user_wins + leaguemate.user_losses === 0 ? null : 
+                                    <em>{(leaguemate.user_wins/(leaguemate.user_wins + leaguemate.user_losses)).toFixed(4)}</em>
                                 }    
                             </td>
                             <td>{leaguemate.fpts}</td>
