@@ -115,8 +115,15 @@ const Leagues = (props) => {
         setLeagues([...l])
     }
 
+    const total_wins = leagues.filter(x => x.isLeagueHidden === false).reduce((acc, cur) => acc + cur.record.wins, 0)
+    const total_losses = leagues.filter(x => x.isLeagueHidden === false).reduce((acc, cur) => acc + cur.record.losses, 0)
+    const total_ties = leagues.filter(x => x.isLeagueHidden === false).reduce((acc, cur) => acc + cur.record.ties, 0)
+    const win_pct = total_wins + total_losses > 0 ? total_wins / (total_wins + total_losses + total_ties) : null
+
     return <>
         <div className="search_wrapper">
+            <h2>{leagues.filter(x => x.isLeagueHidden === false).length} Leagues</h2>
+            <h2>{total_wins}-{total_losses}{total_ties === 0 ? null : `-${total_ties}`} <em>{win_pct.toFixed(4)}</em></h2>
             <Search
                 list={leagues.map(league => league.name)}
                 placeholder="Search Leagues"
