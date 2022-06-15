@@ -80,7 +80,7 @@ const getLeagues = async (username, season, week) => {
                     wins: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/W/g) === null ?
                         0 : userRoster.metadata.record.match(/W/g).length
                         : userRoster.settings.wins,
-                    losses: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined ?
+                    losses: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/L/g) === null ?
                         0 : userRoster.metadata.record.match(/L/g).length
                         : userRoster.settings.losses,
                     ties: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/T/g) === null ?
