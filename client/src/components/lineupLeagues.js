@@ -13,7 +13,7 @@ const LineupLeagues = (props) => {
         })
         setLeagues([...l])
     }
-
+    console.log(leagues)
     return <>
         <table className="secondary">
             <tbody>

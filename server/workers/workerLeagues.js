@@ -37,7 +37,7 @@ const getLeagues = async (username, season, week) => {
         const [rosters, users, matchups, traded_picks] = await Promise.all([
             await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/rosters`, { timeout: 3000 }),
             await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/users`, { timeout: 3000 }),
-            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/matchups/${week}`, { timeout: 3000 }),
+            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/matchups/${Math.max(week, 1)}`, { timeout: 3000 }),
             await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/traded_picks`, { timeout: 3000 })
         ])
         rosters.data = rosters.data.map(roster => {
@@ -61,9 +61,9 @@ const getLeagues = async (username, season, week) => {
                 draft_picks: league.settings.type === 2 ? getDraftPicks(league, roster.roster_id, season, traded_picks.data) : []
             }
         })
-        const userRoster = rosters.data.find(x => x.owner_id === user.data.user_id)
+        const userRoster = rosters.data.find(x => x.owner_id === user.data.user_id || (x.co_owners !== null && x.co_owners !== undefined && x.co_owners.includes(user.data.user_id)))
 
-        if (userRoster !== undefined || matchups.data.length > 0) {
+        if (userRoster !== undefined) {
             const matchup = matchups.data.find(x => x.roster_id === userRoster.roster_id)
             const matchup_opponent = matchups.data.find(x => x.matchup_id === matchup.matchup_id && x.roster_id !== matchup.roster_id)
             const opponent = matchup_opponent === undefined ? 'orphan' : rosters.data.find(x => x.roster_id === matchup_opponent.roster_id)
@@ -89,6 +89,7 @@ const getLeagues = async (username, season, week) => {
                 },
                 fpts: userRoster === {} ? 0 : parseFloat(`${userRoster.settings.fpts}.${userRoster.settings.fpts_decimal === undefined ? 0 : userRoster.settings.fpts_decimal}`),
                 fpts_against: userRoster === {} ? 0 : parseFloat(`${userRoster.settings.fpts_against === undefined ? 0 : userRoster.settings.fpts_against}.${userRoster.settings.fpts_against_decimal === undefined ? 0 : userRoster.settings.fpts_against_decimal}`),
+                matchups: matchups.data,
                 matchup: matchup,
                 matchup_opponent: matchup_opponent,
                 opponent: opponent === undefined ? 'orphan' : opponent,
