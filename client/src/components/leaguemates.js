@@ -41,7 +41,8 @@ const Leaguemates = (props) => {
                     wins: roster.wins,
                     losses: roster.losses,
                     ties: roster.ties,
-                    user_avatar: roster.avatar
+                    user_wins: league.record.wins,
+                    avatar: roster.avatar
                 }
             })
         }).flat()
@@ -54,10 +55,12 @@ const Leaguemates = (props) => {
             if (index === -1) {
                 lmOccurrences.push({
                     id: lm.owner_id,
-                    avatar: lm.user_avatar,
+                    avatar: lm.avatar,
+                    user_avatar: lm.user_avatar,
                     username: lm.username,
                     count: 1,
                     leagues: [lm.league],
+                    user_wins: lm.user_wins,
                     wins: lm.wins,
                     losses: lm.losses,
                     ties: lm.ties,
@@ -69,6 +72,7 @@ const Leaguemates = (props) => {
             } else {
                 lmOccurrences[index].count++
                 lmOccurrences[index].leagues.push(lm.league)
+                lmOccurrences[index].user_wins = lmOccurrences[index].user_wins + lm.user_wins
                 lmOccurrences[index].wins = lmOccurrences[index].wins + lm.wins
                 lmOccurrences[index].losses = lmOccurrences[index].losses + lm.losses 
                 lmOccurrences[index].ties = lmOccurrences[index].ties + lm.ties 
@@ -133,7 +137,7 @@ const Leaguemates = (props) => {
                             <td>{leaguemate.fpts}</td>
                             <td>{leaguemate.fpts_against}</td>
                             <td>
-                                {leaguemate.wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
+                                {leaguemate.user_wins}-{leaguemate.losses}{leaguemate.ties === 0 ? null : `-${leaguemate.ties}`}&nbsp;
                                 {leaguemate.wins + leaguemate.losses === 0 ? null : 
                                     <em>{(leaguemate.wins/(leaguemate.wins + leaguemate.losses)).toFixed(4)}</em>
                                 }    
