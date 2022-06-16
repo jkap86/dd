@@ -186,7 +186,7 @@ button.nav {
 button.active {
   background-color: var(--secondary-color);
   border: 2px solid var(--fourth-color);
-  
+  color: var(--fourth-color);
 }
 
 .slidercontainer {

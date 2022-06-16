@@ -141,7 +141,7 @@ const Roster = (props) => {
                                                     <th>
                                                         {
                                                             props.roster.players.filter(x => allPlayers[x].position === 'QB').reduce((acc, cur) =>
-                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
                                                         }
                                                     </th>
                                                 </tr>
@@ -166,7 +166,7 @@ const Roster = (props) => {
                                                     <th>
                                                         {
                                                             props.roster.players.filter(x => allPlayers[x].position === 'RB').reduce((acc, cur) =>
-                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
                                                         }
                                                     </th>
                                                 </tr>
@@ -191,7 +191,7 @@ const Roster = (props) => {
                                                     <th>
                                                         {
                                                             props.roster.players.filter(x => allPlayers[x].position === 'WR').reduce((acc, cur) =>
-                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
                                                         }
                                                     </th>
                                                 </tr>
@@ -216,7 +216,7 @@ const Roster = (props) => {
                                                     <th>
                                                         {
                                                             props.roster.players.filter(x => allPlayers[x].position === 'TE').reduce((acc, cur) =>
-                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                                                                acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")
                                                         }
                                                     </th>
                                                 </tr>

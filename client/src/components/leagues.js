@@ -140,7 +140,7 @@ const Leagues = (props) => {
                         <th colSpan={2}>Points For</th>
                         <th colSpan={2}>Points Against</th>
                         <th colSpan={2}>
-                            <select onChange={(e) => setGroup_value(e.target.value)}>
+                            <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                                 <option>Total</option>
                                 <option>Roster</option>
                                 <option>Picks</option>
@@ -154,7 +154,7 @@ const Leagues = (props) => {
                             Value
                         </th>
                         <th colSpan={2}>
-                            <select onChange={(e) => setGroup_age(e.target.value)}>
+                            <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
                                 <option>All</option>
                                 <option>Starters</option>
                                 <option>Bench</option>
@@ -210,6 +210,8 @@ const Leagues = (props) => {
                                             matchPick={props.matchPick}
                                             group_value={group_value}
                                             group_age={group_age}
+                                            sendGroupValue={(data) => setGroup_value(data)}
+                                            sendGroupAge={(data) => setGroup_age(data)}
                                         />
                                     </td>
                                 </tr>

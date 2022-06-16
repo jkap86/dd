@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Roster from "./roster";
 import emoji from '../emoji.png';
 import allPlayers from '../allPlayers.json';
 
 const League = (props) => {
     const [league, setLeague] = useState({})
+    const [group_value, setGroup_value] = useState(props.group_value)
+    const [group_age, setGroup_age] = useState(props.group_age)
     if (props.league !== league) setLeague(props.league)
 
     const showRoster = (roster_id) => {
@@ -92,6 +94,22 @@ const League = (props) => {
         }
     })
 
+    useEffect(() => {
+        props.sendGroupValue(group_value)
+    }, [group_value])
+
+    useEffect(() => {
+        setGroup_value(props.group_value)
+    }, [props.group_value])
+
+    useEffect(() => {
+        props.sendGroupAge(group_age)
+    }, [group_age])
+
+    useEffect(() => {
+        setGroup_age(props.group_age)
+    }, [props.group_age])
+
     return <>
         <table className="secondary">
             <tbody>
@@ -100,8 +118,32 @@ const League = (props) => {
                     <th>Record</th>
                     <th>Points For</th>
                     <th>Points Against</th>
-                    <th>{props.group_value} Value</th>
-                    <th>{props.group_age} Age</th>
+                    <th>
+                        <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
+                            <option>Total</option>
+                            <option>Roster</option>
+                            <option>Picks</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        Value
+                    </th>
+                    <th>
+                        <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
+                            <option>All</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        Age
+                    </th>
                 </tr>
                 {rosters === null ? null : rosters.sort((a, b) => b.value - a.value).map((roster, index) =>
                     <React.Fragment key={index}>
