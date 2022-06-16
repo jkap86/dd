@@ -3,6 +3,7 @@ import allPlayers from '../allPlayers.json';
 import player_default from '../player_default.png';
 import LineupLeagues from "./lineupLeagues";
 import Search from "./search";
+import emoji from '../emoji.png';
 
 const Lineups = (props) => {
     const [starters, setStarters] = useState([])
@@ -36,7 +37,7 @@ const Lineups = (props) => {
             s.map(starter => {
                 return starter.isPlayerHidden = true
             })
-            s.filter(x => x.id !== '0' && allPlayers[x.id].full_name === data).map(starter => {
+            s.filter(x => (x.id === '0' && data === 'Empty') || (x.id !== '0' && allPlayers[x.id].full_name === data)).map(starter => {
                 return starter.isPlayerHidden = false
             })
 
@@ -126,7 +127,10 @@ const Lineups = (props) => {
                 </label>
             </div>
             <Search
-                list={starters.filter(x => x.id !== '0').map(starter => allPlayers[starter.id].full_name)}
+                list={starters.map(starter => {
+                    let s = starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name
+                    return s
+                })}
                 placeholder="Search Starters"
                 sendSearched={getSearched}
             />
@@ -143,7 +147,7 @@ const Lineups = (props) => {
                     </tr>
                 </tbody>
                 <tbody className="slide_up">
-                    {starters.filter(x => x.id !== '0' && x.isPlayerHidden === false && !filters.positions.includes(x.position) && 
+                    {starters.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) && 
                         !filters.types.includes(x.type)).sort((a, b) => b.count - a.count).map((starter, index) =>
                         <React.Fragment key={index}>
                             <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>
@@ -153,14 +157,14 @@ const Lineups = (props) => {
                                         style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
                                         className="thumbnail"
                                         alt="headshot"
-                                        src={`https://sleepercdn.com/content/nfl/players/thumb/${starter.id}.jpg`}
+                                        src={starter.id === '0' ? emoji : `https://sleepercdn.com/content/nfl/players/thumb/${starter.id}.jpg`}
                                         onError={(e) => { return e.target.src = player_default }}
                                     />
                                 </td>
-                                <td colSpan={2} className="left">{allPlayers[starter.id].full_name}</td>
-                                <td>{allPlayers[starter.id].position}</td>
-                                <td>{allPlayers[starter.id].team === null ? 'FA' : allPlayers[starter.id].team}</td>
-                                <td>{parseInt(props.matchPlayer_DV(starter.id)).toLocaleString("en-US")}</td>
+                                <td colSpan={2} className="left">{starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name}</td>
+                                <td>{starter.id === '0' ? null : allPlayers[starter.id].position}</td>
+                                <td>{starter.id === '0' ? null : allPlayers[starter.id].team === null ? 'FA' : allPlayers[starter.id].team}</td>
+                                <td>{starter.id === '0' ? null : parseInt(props.matchPlayer_DV(starter.id)).toLocaleString("en-US")}</td>
                             </tr>
                             {starter.isLeaguesHidden ? null :
                                 <tr>

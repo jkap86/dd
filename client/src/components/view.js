@@ -89,7 +89,7 @@ const View = () => {
                 <button onClick={() => setActiveTab('Leagues')} className={activeTab === 'Leagues' ? 'active nav clickable' : 'nav clickable'}>Leagues</button>
                 <button onClick={() => setActiveTab('Players')} className={activeTab === 'Players' ? 'active nav clickable' : 'nav clickable'}>Players</button>
                 <button onClick={() => setActiveTab('Leaguemates')} className={activeTab === 'Leaguemates' ? 'active nav clickable' : 'nav clickable'}>Leaguemates</button>
-                <button onClick={() => setActiveTab('Lineups')} className={activeTab === 'Lineups' ? 'active nav clickable' : 'nav clickable'}>Lineups</button>
+                <button onClick={() => setActiveTab('Lineups')} className={activeTab === 'Lineups' ? 'active nav clickable' : 'nav clickable'}>Starters</button>
             </div>
             <div className="slidercontainer">
                 <SliderToggle
