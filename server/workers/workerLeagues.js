@@ -67,7 +67,15 @@ const getLeagues = async (username, season, week) => {
             const matchup = matchups.data.find(x => x.roster_id === userRoster.roster_id)
             const matchup_opponent = matchups.data.find(x => x.matchup_id === matchup.matchup_id && x.roster_id !== matchup.roster_id)
             const opponent = matchup_opponent === undefined ? 'orphan' : rosters.data.find(x => x.roster_id === matchup_opponent.roster_id)
-
+            const wins = week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/W/g) === null ?
+                0 : userRoster.metadata.record.match(/W/g).length
+                : userRoster.settings.wins
+            const losses = week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/L/g) === null ?
+                0 : userRoster.metadata.record.match(/L/g).length
+                : userRoster.settings.losses
+            const ties = week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/T/g) === null ?
+                0 : userRoster.metadata.record.match(/T/g).length
+                : userRoster.settings.ties
             leagues.push({
                 ...league,
                 index: index,
@@ -77,15 +85,10 @@ const getLeagues = async (username, season, week) => {
                 userRoster: userRoster === undefined ? {} : userRoster,
                 users: users.data,
                 record: {
-                    wins: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/W/g) === null ?
-                        0 : userRoster.metadata.record.match(/W/g).length
-                        : userRoster.settings.wins,
-                    losses: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/L/g) === null ?
-                        0 : userRoster.metadata.record.match(/L/g).length
-                        : userRoster.settings.losses,
-                    ties: week < 1 ? userRoster.metadata === null || userRoster.metadata.record === undefined || userRoster.metadata.record.match(/T/g) === null ?
-                        0 : userRoster.metadata.record.match(/T/g).length
-                        : userRoster.settings.ties
+                    wins: wins,
+                    losses: losses,
+                    ties: ties,
+                    winpct: wins + losses + ties > 0 ? wins / (wins + losses + ties) : 0
                 },
                 fpts: userRoster === {} ? 0 : parseFloat(`${userRoster.settings.fpts}.${userRoster.settings.fpts_decimal === undefined ? 0 : userRoster.settings.fpts_decimal}`),
                 fpts_against: userRoster === {} ? 0 : parseFloat(`${userRoster.settings.fpts_against === undefined ? 0 : userRoster.settings.fpts_against}.${userRoster.settings.fpts_against_decimal === undefined ? 0 : userRoster.settings.fpts_against_decimal}`),

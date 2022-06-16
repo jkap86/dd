@@ -365,3 +365,6 @@ select {
 option {
   background-color: var(--secondary-color);
 }
+th > p {
+  display: inline;
+}
