@@ -3,8 +3,9 @@ h1 {
   filter: brightness(1.5);
   text-shadow: 0 0 .1em var(--secondary-color);
   text-align: center;
-  margin-top: 0;
   font-size: 3vh;
+  width: fit-content;
+  margin: auto;
 }
 
 h2 {
@@ -106,7 +107,7 @@ button.home {
   font-size: 125%;
   padding: 0.5em;
   border-radius: 1em;
-  
+
 }
 
 table.main {
@@ -160,11 +161,13 @@ table.rostercolumn {
   color: var(--third-color);
   margin: 1em;
 }
-table.rostercolumn > tbody > tr > th {
+
+table.rostercolumn>tbody>tr>th {
   color: var(--secondary-color);
   font-weight: 500;
   box-shadow: 0 0 .5em var(--primary-color);
 }
+
 div.nav_container {
   width: 100%;
   display: inline-flex;
@@ -228,6 +231,7 @@ table.secondary,
 table.tertiary {
   animation: expand_down 0.5s ease-out;
 }
+
 .slide_up {
   animation: slide_up 1s ease-out;
 }
@@ -295,7 +299,8 @@ p.record {
   opacity: .95;
 }
 
-tr.hover2:hover em, tr.hover2.active em {
+tr.hover2:hover em,
+tr.hover2.active em {
   filter: invert(1);
 }
 
@@ -311,6 +316,7 @@ span.checkboxes {
   text-align: center;
   margin-top: 2em;
 }
+
 input[type="checkbox"] {
   appearance: none;
   color: currentColor;
@@ -325,6 +331,7 @@ input[type="checkbox"] {
   place-content: center;
   box-shadow: inset 0 0 .25em var(--primary-color), 0 0 .25em var(--fifth-color);
 }
+
 input[type="checkbox"]::before {
   content: "";
   width: .65em;
@@ -334,9 +341,11 @@ input[type="checkbox"]::before {
   box-shadow: inset 1em 1em var(--fourth-color);
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
+
 input[type="checkbox"]:checked::before {
   transform: scale(1.2);
 }
+
 label.script {
   display: inline-flex;
   flex-direction: column;
@@ -347,6 +356,7 @@ label.script {
 .updated_value.modified {
   outline: .5em solid var(--third-color);
 }
+
 .updated_value {
   border: none;
   width: 50%;
@@ -362,9 +372,34 @@ select {
   border: unset;
   text-align: right;
 }
+
 option {
   background-color: var(--secondary-color);
 }
-th > p {
+
+th>p {
   display: inline;
+}
+
+p.image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  color: var(--fourth-color);
+  font-weight: 900;
+}
+
+tr.hover2:hover p.image, tr.hover2.active p.image {
+  color: var(--third-color);
+}
+
+div.image_container {
+  position: relative;
+}
+
+img.faded {
+  opacity: 0.5;
 }

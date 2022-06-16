@@ -194,7 +194,7 @@ const League = (props) => {
                         <tr className={roster.isRosterHidden ? 'hover2 clickable' : 'hover2 clickable active'} onClick={() => showRoster(roster.roster_id)}>
                             <td>
                                 <img
-                                    style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
+                                    style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out` }}
                                     className="thumbnail"
                                     alt="avatar"
                                     src={roster.avatar === null ? emoji : `https://sleepercdn.com/avatars/${roster.avatar}`}

@@ -8,6 +8,7 @@ import allPlayers from '../allPlayers.json';
 import Leaguemates from "./leaguemates";
 import Lineups from "./lineups";
 import PlayerInfo from "./playerInfo";
+import emoji from '../emoji.png';
 
 const View = () => {
     const params = useParams()
@@ -17,7 +18,7 @@ const View = () => {
     const [activeTab, setActiveTab] = useState('Leagues')
     const [filters, setFilters] = useState({ 'r_d': 'All', 'b_s': 'All' })
 
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,15 +77,26 @@ const View = () => {
 
     return <>
         <div className="nav">
+            <Link to="/" className="link clickable">Home</Link>
+            <button className={activeTab === 'All Players' ? "allplayers active" : "allplayers"} onClick={() => setActiveTab('All Players')}>
+                Dynasty Values
+            </button>
+            <br />
             <h1>
-                <Link to="/" className="link clickable">Home</Link>
                 Dynasty Dashboard
-                <button className={activeTab === 'All Players' ? "allplayers active" : "allplayers"} onClick={() => setActiveTab('All Players')}>
-                    Dynasty Values
-                </button>
             </h1>
 
-            <h2>{user.display_name}</h2>
+            <h2>
+                <div className="image_container">
+                    <img
+                        style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out` }}
+                        className="thumbnail faded"
+                        alt="avatar"
+                        src={user.avatar === null ? emoji : `https://sleepercdn.com/avatars/${user.avatar}`}
+                    />
+                    <p className="image">{user.display_name}</p>
+                </div>
+            </h2>
             <div className="nav_container">
                 <button onClick={() => setActiveTab('Leagues')} className={activeTab === 'Leagues' ? 'active nav clickable' : 'nav clickable'}>Leagues</button>
                 <button onClick={() => setActiveTab('Players')} className={activeTab === 'Players' ? 'active nav clickable' : 'nav clickable'}>Players</button>
@@ -108,7 +120,7 @@ const View = () => {
                 />
             </div>
         </div>
-        <div hidden={activeTab === 'All Players' ? false : true}> 
+        <div hidden={activeTab === 'All Players' ? false : true}>
             <PlayerInfo
                 sendDV={(data) => setDv(data)}
             />

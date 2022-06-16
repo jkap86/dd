@@ -228,7 +228,7 @@ const Leagues = (props) => {
                             >
                                 <td>
                                     <img
-                                        style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
+                                        style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out` }}
                                         className="thumbnail"
                                         alt="avatar"
                                         src={league.avatar === null ? emoji : `https://sleepercdn.com/avatars/${league.avatar}`}

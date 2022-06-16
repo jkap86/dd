@@ -118,15 +118,17 @@ const LeaguemateLeagues = (props) => {
                             <td colSpan={2}>
                                 {league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null : getValue(league.rosters.find(x => x.username === props.leaguemate.username)).toLocaleString("en-US")}
                             </td>
-                            <td>
-                                <img
-                                    style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
-                                    className="thumbnail"
-                                    alt="avatar"
-                                    src={league.avatar === null ? emoji : `https://sleepercdn.com/avatars/${league.avatar}`}
-                                />
+                            <td colSpan={4}>
+                                <div className="image_container">
+                                    <img
+                                        style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
+                                        className="thumbnail faded"
+                                        alt="avatar"
+                                        src={league.avatar === null ? emoji : `https://sleepercdn.com/avatars/${league.avatar}`}
+                                    />
+                                    <p className="image">{league.name}</p>
+                                </div>
                             </td>
-                            <td colSpan={3} className="left">{league.name}</td>
                             <td colSpan={2}>
                                 <p className="record">
                                     {league.record.wins}-{league.record.losses}{league.record.ties === 0 ? null : `-${league.record.ties}`}
