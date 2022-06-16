@@ -42,20 +42,24 @@ const getLeagues = async (username, season, week) => {
         ])
         rosters.data = rosters.data.map(roster => {
             const roster_user = users.data.find(x => x.user_id === roster.owner_id)
+            const wins = week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/W/g) === null ?
+                0 : roster.metadata.record.match(/W/g).length
+                : roster.settings.wins
+            const losses = week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/L/g) === null ?
+                0 : roster.metadata.record.match(/L/g).length
+                : roster.settings.losses
+            const ties = week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/T/g) === null ?
+                0 : roster.metadata.record.match(/T/g).length
+                : roster.settings.ties
             return {
                 ...roster,
                 username: roster_user === undefined ? 'Orphan' : roster_user.display_name,
                 avatar: roster_user === undefined ? null : roster_user.avatar,
                 isRosterHidden: true,
-                wins: week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/W/g) === null ?
-                    0 : roster.metadata.record.match(/W/g).length
-                    : roster.settings.wins,
-                losses: week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/L/g) === null ?
-                    0 : roster.metadata.record.match(/L/g).length
-                    : roster.settings.losses,
-                ties: week < 1 ? roster.metadata === null || roster.metadata.record === undefined || roster.metadata.record.match(/T/g) === null ?
-                    0 : roster.metadata.record.match(/T/g).length
-                    : roster.settings.ties,
+                wins: wins,
+                losses: losses,
+                ties: ties,
+                winpct: wins + losses + ties > 0 ? wins / (wins + losses + ties) : 0,
                 fpts: parseFloat(`${roster.settings.fpts}.${roster.settings.fpts_decimal === undefined ? 0 : roster.settings.fpts_decimal}`),
                 fpts_against: parseFloat(`${roster.settings.fpts_against === undefined ? 0 : roster.settings.fpts_against}.${roster.settings.fpts_against_decimal === undefined ? 0 : roster.settings.fpts_against_decimal}`),
                 draft_picks: league.settings.type === 2 ? getDraftPicks(league, roster.roster_id, season, traded_picks.data) : []

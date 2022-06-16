@@ -103,7 +103,7 @@ const Leagues = (props) => {
             length = 0
         }
 
-        return length === 0 ? '-' : (r / length).toFixed(2)
+        return length === 0 ? '-' : (r / length).toFixed(1)
     }
 
     const showRosters = (league_id) => {
