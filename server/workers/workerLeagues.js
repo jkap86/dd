@@ -1,4 +1,5 @@
-const workerpool = require('workerpool')
+const express = require('express')
+const router = express.Router()
 const axios = require('axios')
 
 const getDraftPicks = (league, roster_id, season, traded_picks) => {
@@ -111,6 +112,14 @@ const getLeagues = async (username, season, week) => {
     return leagues
 }
 
-workerpool.worker({
-    getLeagues: getLeagues
+router.get('/leagues', async (req, res, next) => {
+    const username = req.query.username
+    const state = await axios.get(`https://api.sleeper.app/v1/state/nfl`, { timeout: 3000 })
+    const season = state.data.league_season
+    const week = state.data.display_week
+    const result = await getLeagues(username, season, week)
+    res.send(result)
+    next
 })
+
+module.exports = router

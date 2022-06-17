@@ -1,4 +1,5 @@
-const workerpool = require('workerpool')
+const express = require('express')
+const router = express.Router()
 const axios = require('axios')
 const cheerio = require('cheerio')
 
@@ -22,6 +23,10 @@ const get_proj = async () => {
     return elements
 }
 
-workerpool.worker({
-    get_proj, get_proj
+router.get('/dynastyvalues', async (req, res, next) => {
+    const dv = await get_proj()
+    res.send(dv)
+    next
 })
+
+module.exports = router
