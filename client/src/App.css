@@ -133,13 +133,13 @@ tr.hover.active {
 
 table.secondary {
   background-color: var(--primary-color);
-  border-spacing: 0;
+  border-spacing: 0 1em;
   table-layout: fixed;
   width: 100%;
 }
 
-tr {
-  overflow-x: scroll;
+tr.hover2 {
+  height: 5em;
 }
 
 tr.hover2:hover,

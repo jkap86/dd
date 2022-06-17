@@ -145,7 +145,8 @@ const LeaguemateLeagues = (props) => {
                                 {league.userRoster.players === null ? null : getValue(league.userRoster).toLocaleString("en-US")}
                             </td>
                         </tr>
-                        {league.isRostersHidden === true || league.userRoster.players === null ? null :
+                        {league.isRostersHidden === true || league.userRoster.players === null ||
+                            league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null :
                             <tr>
                                 <td colSpan={8} className="top">
                                     <Roster
