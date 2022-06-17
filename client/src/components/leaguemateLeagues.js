@@ -5,6 +5,7 @@ import allPlayers from '../allPlayers.json';
 
 const LeaguemateLeagues = (props) => {
     const [group_value, setGroup_value] = useState('Total')
+    const [group_age, setGroup_age] = useState('All')
     const [leagues, setLeagues] = useState([])
     if (props.leaguemate.leagues !== leagues) setLeagues(props.leaguemate.leagues)
 
@@ -53,6 +54,51 @@ const LeaguemateLeagues = (props) => {
         return r
     }
 
+    const getAge = (roster) => {
+        let r;
+        let length;
+        if (roster.players !== null) {
+            switch (group_age) {
+                case 'All':
+                    r = roster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'Starters':
+                    r = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'Bench':
+                    r = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => !roster.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'QB':
+                    r = roster.players.filter(x => allPlayers[x].position === 'QB').reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => allPlayers[x].position === 'QB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'RB':
+                    r = roster.players.filter(x => allPlayers[x].position === 'RB').reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => allPlayers[x].position === 'RB').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'WR':
+                    r = roster.players.filter(x => allPlayers[x].position === 'WR').reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => allPlayers[x].position === 'WR').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                case 'TE':
+                    r = roster.players.filter(x => allPlayers[x].position === 'TE').reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                    length = roster.players.filter(x => allPlayers[x].position === 'TE').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
+                    break;
+                default:
+                    r = 0
+                    length = 0
+                    break;
+            }
+        } else {
+            r = 0
+            length = 0
+        }
+        return length === 0 ? '-' : (r / length).toFixed(1)
+    }
+
     return <>
         <table className="secondary">
             <tbody>
@@ -62,8 +108,8 @@ const LeaguemateLeagues = (props) => {
                     <th colSpan={6}>{props.user.username}</th>
                 </tr>
                 <tr>
-                    <th colSpan={2}>Record</th>
-                    <th colSpan={2}>Fantasy Points</th>
+                    <th colSpan={2}>W-L</th>
+                    <th colSpan={2}>FP</th>
                     <th colSpan={2}>
                         <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                             <option>Total</option>
@@ -78,9 +124,21 @@ const LeaguemateLeagues = (props) => {
                         </select>
                         Value
                     </th>
+                    <th>
+                        <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
+                            <option>All</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        VWA
+                    </th>
                     <th colSpan={4}>League</th>
-                    <th colSpan={2}>Record</th>
-                    <th colSpan={2}>Fantasy Points</th>
+                    <th colSpan={2}>W-L</th>
+                    <th colSpan={2}>FP</th>
                     <th colSpan={2}>
                         <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                             <option>Total</option>
@@ -94,6 +152,18 @@ const LeaguemateLeagues = (props) => {
                             <option>TE</option>
                         </select>
                         Value
+                    </th>
+                    <th>
+                        <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
+                            <option>All</option>
+                            <option>Starters</option>
+                            <option>Bench</option>
+                            <option>QB</option>
+                            <option>RB</option>
+                            <option>WR</option>
+                            <option>TE</option>
+                        </select>
+                        VWA
                     </th>
                 </tr>
                 {leagues.sort((a, b) => a.index - b.index).map((league, index) =>
@@ -117,6 +187,9 @@ const LeaguemateLeagues = (props) => {
                             </td>
                             <td colSpan={2}>
                                 {league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null : getValue(league.rosters.find(x => x.username === props.leaguemate.username)).toLocaleString("en-US")}
+                            </td>
+                            <td>
+                                {getAge(league.rosters.find(x => x.username === props.leaguemate.username))}
                             </td>
                             <td colSpan={4}>
                                 <div className="image_container">
@@ -144,18 +217,21 @@ const LeaguemateLeagues = (props) => {
                             <td colSpan={2}>
                                 {league.userRoster.players === null ? null : getValue(league.userRoster).toLocaleString("en-US")}
                             </td>
+                            <td>
+                                {getAge(league.userRoster)}
+                            </td>
                         </tr>
                         {league.isRostersHidden === true || league.userRoster.players === null ||
                             league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null :
                             <tr>
-                                <td colSpan={8} className="top">
+                                <td colSpan={9} className="top">
                                     <Roster
                                         roster={league.rosters.find(x => x.username === props.leaguemate.username)}
                                         matchPlayer_DV={props.matchPlayer_DV}
                                         matchPick={props.matchPick}
                                     />
                                 </td>
-                                <td colSpan={8} className="top">
+                                <td colSpan={9} className="top">
                                     <Roster
                                         roster={league.userRoster}
                                         matchPlayer_DV={props.matchPlayer_DV}

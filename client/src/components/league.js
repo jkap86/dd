@@ -100,38 +100,38 @@ const League = (props) => {
         let length;
         switch (group_age) {
             case 'All':
-                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'Starters':
-                age = r.players === null ? 0 : r.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.starters.filter(x => x !== '0' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'Bench':
-                age = r.players === null ? 0 : r.players.filter(x => !r.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => !r.starters.includes(x) && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => !r.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => !r.starters.includes(x) && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'QB':
-                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'QB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'RB':
-                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'RB' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'WR':
-                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'WR' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             case 'TE':
-                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age, 0)
-                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).length
+                age = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + allPlayers[cur].age * parseInt(props.matchPlayer_DV(cur)), 0)
+                length = r.players === null ? 0 : r.players.filter(x => allPlayers[x].position === 'TE' && allPlayers[x].age !== undefined).reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0)
                 break;
             default:
                 age = 0
-                length = 1
+                length = 0
         }
-        return length === 0 ? 0 : (age / length).toFixed(1)
+        return length === 0 ? '-' : (age / length).toFixed(1)
     }
 
     useEffect(() => {
@@ -160,8 +160,8 @@ const League = (props) => {
                 <tr>
                     <th className="clickable" onClick={() => sort('Team')} colSpan={2}>Team</th>
                     <th className="clickable" onClick={() => sort('Record')}>Record</th>
-                    <th className="clickable" onClick={() => sort('Points For')}>Points For</th>
-                    <th className="clickable" onClick={() => sort('Points Against')}>Points Against</th>
+                    <th className="clickable" onClick={() => sort('Points For')}>PF</th>
+                    <th className="clickable" onClick={() => sort('Points Against')}>PA</th>
                     <th>
                         <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                             <option>Total</option>
@@ -174,7 +174,9 @@ const League = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        <p className="clickable" onClick={() => sort('Value')}>Value</p>
+                        <p className="clickable" onClick={() => sort('Value')}>
+                            Value
+                        </p>
                     </th>
                     <th>
                         <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
@@ -186,7 +188,9 @@ const League = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        <p className="clickable" onClick={() => sort('Age')}>Age</p>
+                        <p className="clickable" onClick={() => sort('Age')}>
+                            VWA
+                        </p>
                     </th>
                 </tr>
                 {rosters === null ? null : rosters.map((roster, index) =>
