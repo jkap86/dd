@@ -133,9 +133,9 @@ tr.hover.active {
 
 table.secondary {
   background-color: var(--primary-color);
-  border-spacing: 0 1em;
   table-layout: fixed;
   width: 100%;
+  border-collapse: collapse;
 }
 
 tr.hover2 {
@@ -292,6 +292,7 @@ p.record {
   top: 0;
   background-color: inherit;
   z-index: 3;
+  outline: .1em dotted var(--fifth-color);
 }
 
 .black {
@@ -392,7 +393,8 @@ p.image {
   font-weight: 900;
 }
 
-tr.hover2:hover p.image, tr.hover2.active p.image {
+tr.hover2:hover p.image,
+tr.hover2.active p.image {
   color: var(--third-color);
 }
 
@@ -408,6 +410,7 @@ img.faded {
   position: relative;
   display: inline-block;
 }
+
 .tooltip .tooltiptext {
   visibility: hidden;
   position: absolute;
@@ -418,6 +421,7 @@ img.faded {
   color: var(--fourth-color);
   padding: .25em;
 }
+
 .tooltip .tooltiptext::after {
   content: " ";
   position: absolute;
@@ -428,7 +432,7 @@ img.faded {
   border-style: solid;
   border-color: transparent var(--third-color) transparent transparent;
 }
+
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-

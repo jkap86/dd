@@ -156,7 +156,7 @@ const League = (props) => {
 
     return <>
         <table className="secondary">
-            <tbody>
+            <tbody className="fade_in sticky">
                 <tr>
                     <th className="clickable" onClick={() => sort('Team')} colSpan={2}>Team</th>
                     <th className="clickable" onClick={() => sort('Record')}>Record</th>
@@ -198,6 +198,8 @@ const League = (props) => {
                         </div>
                     </th>
                 </tr>
+            </tbody>
+            <tbody>
                 {rosters === null ? null : rosters.map((roster, index) =>
                     <React.Fragment key={index}>
                         <tr className={roster.isRosterHidden ? 'hover2 clickable' : 'hover2 clickable active'} onClick={() => showRoster(roster.roster_id)}>

@@ -101,11 +101,11 @@ const LeaguemateLeagues = (props) => {
 
     return <>
         <table className="secondary">
-            <tbody>
+            <tbody className="sticky">
                 <tr>
-                    <th colSpan={6}>{props.leaguemate.username}</th>
+                    <th colSpan={7}>{props.leaguemate.username}</th>
                     <th colSpan={4}></th>
-                    <th colSpan={6}>{props.user.username}</th>
+                    <th colSpan={7}>{props.user.username}</th>
                 </tr>
                 <tr>
                     <th colSpan={2}>W-L</th>
@@ -176,6 +176,8 @@ const LeaguemateLeagues = (props) => {
                         </div>
                     </th>
                 </tr>
+            </tbody>
+            <tbody>
                 {leagues.sort((a, b) => a.index - b.index).map((league, index) =>
                     <React.Fragment key={index}>
                         <tr onClick={() => showLeagues(league.league_id)} className={league.isRostersHidden ? 'hover2 clickable' : 'hover2 clickable active'}>

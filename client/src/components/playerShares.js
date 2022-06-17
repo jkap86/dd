@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import allPlayers from '../allPlayers.json';
 import Search from "./search";
 import PlayerLeagues from "./playerLeagues";
@@ -7,6 +7,42 @@ import player_default from "../player_default.png";
 const PlayerShares = (props) => {
     const [players, setPlayers] = useState([])
     const [filters, setFilters] = useState({ positions: [], types: [] })
+    const [sortBy, setSortBy] = useState('index')
+    const [sortToggle, setSortToggle] = useState(false)
+
+    const sort = (sort_by) => {
+        const t = sortToggle
+        const s = sortBy
+        if (sort_by === s) {
+            setSortToggle(!t)
+        } else {
+            setSortBy(sort_by)
+        }
+
+        let p = players
+        switch (sort_by) {
+            case 'Count':
+                p = t ? p.sort((a, b) => parseInt(a.count) - parseInt(b.count)) : p.sort((a, b) => parseInt(b.count) - parseInt(a.count))
+                break;
+            case 'Age':
+                p = t ? p.sort((a, b) => allPlayers[b.id].age - allPlayers[a.id].age ) : p.sort((a, b) => allPlayers[a.id].age - allPlayers[b.id].age )
+                break;
+            case 'Yrs_Exp':
+                p = t ? p.sort((a, b) => allPlayers[b.id].years_exp - allPlayers[a.id].years_exp) : p.sort((a, b) => allPlayers[a.id].years_exp - allPlayers[b.id].years_exp)
+                break;
+            case 'Record':
+                p = t ? p.sort((a, b) => (a.wins/(a.wins + a.losses) - (b.wins/(b.wins + b.losses)))) : p.sort((a, b) => (b.wins/(b.wins + b.losses) - (a.wins/(a.wins + a.losses))))
+                break;
+            case 'Value':
+                p = t ? p.sort((a, b) => parseInt(props.matchPlayer_DV(a.id)) - parseInt(props.matchPlayer_DV(b.id)))
+                    : p.sort((a, b) => parseInt(props.matchPlayer_DV(b.id)) - parseInt(props.matchPlayer_DV(a.id)))
+                break;
+            default:
+                p = p.sort((a, b) => b.count - a.count)
+                break;
+        }
+        setPlayers([...p])
+    }
 
     const filterPosition = (e) => {
         let f = filters.positions
@@ -18,7 +54,6 @@ const PlayerShares = (props) => {
         }
         setFilters({ ...filters, positions: f })
     }
-
     const filterYearsExp = (e) => {
         let f = filters.types
         if (e.target.checked) {
@@ -44,7 +79,7 @@ const PlayerShares = (props) => {
             p.map(player => {
                 return player.isPlayerHidden = true
             })
-            p.filter(player => data ===  `${allPlayers[player.id].full_name} ${allPlayers[player.id].position} ${allPlayers[player.id].team === null ? 'FA' : allPlayers[player.id].team}`)
+            p.filter(player => data === `${allPlayers[player.id].full_name} ${allPlayers[player.id].position} ${allPlayers[player.id].team === null ? 'FA' : allPlayers[player.id].team}`)
                 .map(player => {
                     return player.isPlayerHidden = false
                 })
@@ -136,39 +171,40 @@ const PlayerShares = (props) => {
         return ap
     }
 
-    let playersOwned = props.leagues.map(league => {
-        return league.rosters.filter(x => x.players !== null && x.owner_id === props.user.user_id).map(roster => {
-            return roster.players.map(player => {
-                return {
-                    id: player,
-                    league: league,
-                    wins: league.record.wins,
-                    losses: league.record.losses,
-                    ties: league.record.ties,
-                    fpts: league.fpts,
-                    fpts_against: league.fpts_against
-                }
+    useEffect(() => {
+        let playersOwned = props.leagues.map(league => {
+            return league.rosters.filter(x => x.players !== null && x.owner_id === props.user.user_id).map(roster => {
+                return roster.players.map(player => {
+                    return {
+                        id: player,
+                        league: league,
+                        wins: league.record.wins,
+                        losses: league.record.losses,
+                        ties: league.record.ties,
+                        fpts: league.fpts,
+                        fpts_against: league.fpts_against
+                    }
+                })
             })
-        })
-    }).flat(2)
-    let playersTaken = props.leagues.map(league => {
-        return league.rosters.filter(x => x.players !== null && x.owner_id !== props.user.user_id).map(roster => {
-            return roster.players.map(player => {
-                return {
-                    id: player,
-                    league: league,
-                    wins: roster.wins,
-                    losses: roster.losses,
-                    ties: roster.ties,
-                    fpts: roster.settings.fpts,
-                    fpts_against: roster.settings.fpts_against
-                }
+        }).flat(2)
+        let playersTaken = props.leagues.map(league => {
+            return league.rosters.filter(x => x.players !== null && x.owner_id !== props.user.user_id).map(roster => {
+                return roster.players.map(player => {
+                    return {
+                        id: player,
+                        league: league,
+                        wins: roster.wins,
+                        losses: roster.losses,
+                        ties: roster.ties,
+                        fpts: roster.settings.fpts,
+                        fpts_against: roster.settings.fpts_against
+                    }
+                })
             })
-        })
-    }).flat(2)
-
-    const p = useMemo(() => getPlayerShares(playersOwned, playersTaken), [props.leagues])
-    if (p !== players) setPlayers(p)
+        }).flat(2)
+        const p = getPlayerShares(playersOwned, playersTaken)
+        setPlayers(p.filter(x => x.leagues_owned.length + x.leagues_taken.length > 0).sort((a, b) => b.count - a.count))
+    }, [props.leagues])
 
     return <>
         <div className="search_wrapper">
@@ -215,19 +251,19 @@ const PlayerShares = (props) => {
             <table className="main">
                 <tbody className="fade_in sticky">
                     <tr>
-                        <th colSpan={1}>Count</th>
+                        <th colSpan={1} className="clickable" onClick={() => sort('Count')}>Count</th>
                         <th colSpan={3}>Player</th>
-                        <th colSpan={1}>Age</th>
-                        <th colSpan={1}>Yrs Exp</th>
-                        <th colSpan={3}>Record</th>
+                        <th colSpan={1} className="clickable" onClick={() => sort('Age')}>Age</th>
+                        <th colSpan={1} className="clickable" onClick={() => sort('Yrs_Exp')}>Yrs Exp</th>
+                        <th colSpan={3} className="clickable" onClick={() => sort('Record')}>Record</th>
                         <th colSpan={2}>PF</th>
                         <th colSpan={2}>PA</th>
-                        <th colSpan={2}>Value</th>
+                        <th colSpan={2} className="clickable" onClick={() => sort('Value')}>Value</th>
                     </tr>
                 </tbody>
                 <tbody className="slide_up">
                     {players.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) && !filters.types.includes(x.type))
-                        .sort((a, b) => b.count - a.count).slice(0, 100).map((player, index) =>
+                        .slice(0, 100).map((player, index) =>
                             <React.Fragment key={index}>
                                 <tr onClick={() => showLeagues(player.id)} className={player.isRostersHidden ? "hover clickable" : "hover clickable active"}>
                                     <td>{player.count}</td>
