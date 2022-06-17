@@ -25,11 +25,11 @@ const League = (props) => {
                 r = t ? r.sort((a, b) => parseFloat(a.winpct) - parseFloat(b.winpct)) : r.sort((a, b) => parseFloat(b.winpct) - parseFloat(a.winpct))
                 break;
             case 'Points For':
-                r = t ? r.sort((a, b) => b.settings.fpts - a.settings.fpts || b.settings.fpts_decimal - a.settings.fpts_decimal) : 
+                r = t ? r.sort((a, b) => b.settings.fpts - a.settings.fpts || b.settings.fpts_decimal - a.settings.fpts_decimal) :
                     r.sort((a, b) => a.settings.fpts - b.settings.fpts || a.settings.fpts_decimal - b.settings.fpts_decimal)
                 break;
             case 'Points Against':
-                r = t ? r.sort((a, b) => b.settings.fpts_against - a.settings.fpts_against || b.settings.fpts_against_decimal - a.settings.fpts_against_decimal) : 
+                r = t ? r.sort((a, b) => b.settings.fpts_against - a.settings.fpts_against || b.settings.fpts_against_decimal - a.settings.fpts_against_decimal) :
                     r.sort((a, b) => a.settings.fpts_against - b.settings.fpts_against || a.settings.fpts_against_decimal - b.settings.fpts_against_decimal)
                 break;
             case 'Value':
@@ -188,9 +188,14 @@ const League = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        <p className="clickable" onClick={() => sort('Age')}>
-                            VWA
-                        </p>
+                        <div className="tooltip">
+                            <p className="clickable" onClick={() => sort('Age')}>
+                                VWA
+                            </p>
+                            <span className="tooltiptext">
+                                Value Weighted Age
+                            </span>
+                        </div>
                     </th>
                 </tr>
                 {rosters === null ? null : rosters.map((roster, index) =>

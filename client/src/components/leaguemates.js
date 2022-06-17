@@ -113,11 +113,11 @@ const Leaguemates = (props) => {
                     <th colSpan={2}>Leaguemate</th>
                     <th>Count</th>
                     <th>Record</th>
-                    <th>Points For</th>
-                    <th>Points Against</th>
+                    <th>PF</th>
+                    <th>PA</th>
                     <th>Record</th>
-                    <th>Points For</th>
-                    <th>Points Against</th>
+                    <th>PF</th>
+                    <th>PA</th>
                 </tr>
             </tbody>
             <tbody className="slide_up">

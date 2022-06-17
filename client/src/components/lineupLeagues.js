@@ -19,8 +19,8 @@ const LineupLeagues = (props) => {
             <tbody>
                 <tr>
                     <th colSpan={3}>League</th>
-                    <th colSpan={2}>Points For</th>
-                    <th colSpan={2}>Points Against</th>
+                    <th colSpan={2}>PF</th>
+                    <th colSpan={2}>PA</th>
                     <th colSpan={3}>Opponent</th>
                 </tr>
                 {leagues.map((league, index) =>

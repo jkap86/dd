@@ -215,9 +215,14 @@ const Leagues = (props) => {
                                 <option>WR</option>
                                 <option>TE</option>
                             </select>
-                            <p className="clickable" onClick={() => sort('Age')}>
-                                VWA
-                            </p>
+                            <div className="tooltip">
+                                <p className="clickable" onClick={() => sort('Age')}>
+                                    VWA
+                                </p>
+                                <span className="tooltiptext">
+                                    Value Weighted Age
+                                </span>
+                            </div>
                         </th>
                     </tr>
                 </tbody>

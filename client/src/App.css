@@ -403,3 +403,32 @@ div.image_container {
 img.faded {
   opacity: 0.5;
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  top: -.25em;
+  left: 4em;
+  background-color: var(--third-color);
+  color: var(--fourth-color);
+  padding: .25em;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent var(--third-color) transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+

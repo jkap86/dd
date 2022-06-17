@@ -144,8 +144,8 @@ const PlayerLeagues = (props) => {
                         <th colSpan={2}>League</th>
                         <th>Status</th>
                         <th>Record</th>
-                        <th>Points For</th>
-                        <th>Points Against</th>
+                        <th>PF</th>
+                        <th>PA</th>
                         <th>
                             <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                                 <option>Total</option>
@@ -158,7 +158,7 @@ const PlayerLeagues = (props) => {
                                 <option>WR</option>
                                 <option>TE</option>
                             </select>
-                            Value
+                            <p>Value</p>
                         </th>
                         <th>
                             <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
@@ -170,7 +170,12 @@ const PlayerLeagues = (props) => {
                                 <option>WR</option>
                                 <option>TE</option>
                             </select>
-                            VWA
+                            <div className="tooltip">
+                                <p>VWA</p>
+                                <span className="tooltiptext">
+                                    Value Weighted Age
+                                </span>
+                            </div>
                         </th>
                     </tr>
                     {leagues_owned.sort((a, b) => a.index - b.index).map((league, index) =>
@@ -227,8 +232,8 @@ const PlayerLeagues = (props) => {
                         <th colSpan={4}>League</th>
                         <th>Manager</th>
                         <th>Record</th>
-                        <th>Points For</th>
-                        <th>Points Against</th>
+                        <th>PF</th>
+                        <th>PA</th>
                         <th>
                             <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                                 <option>Total</option>
@@ -309,8 +314,8 @@ const PlayerLeagues = (props) => {
                     <tr>
                         <th colSpan={2}>League</th>
                         <th>Record</th>
-                        <th>Points For</th>
-                        <th>Points Against</th>
+                        <th>PF</th>
+                        <th>PA</th>
                         <th>
                             <select value={group_value} onChange={(e) => setGroup_value(e.target.value)}>
                                 <option>Total</option>

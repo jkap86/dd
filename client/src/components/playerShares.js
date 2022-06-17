@@ -220,8 +220,8 @@ const PlayerShares = (props) => {
                         <th colSpan={1}>Age</th>
                         <th colSpan={1}>Yrs Exp</th>
                         <th colSpan={3}>Record</th>
-                        <th colSpan={2}>Points For</th>
-                        <th colSpan={2}>Points Against</th>
+                        <th colSpan={2}>PF</th>
+                        <th colSpan={2}>PA</th>
                         <th colSpan={2}>Value</th>
                     </tr>
                 </tbody>

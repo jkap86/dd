@@ -134,7 +134,12 @@ const LeaguemateLeagues = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        VWA
+                        <div className="tooltip">
+                            <p>VWA</p>
+                            <span className="tooltiptext">
+                                Value Weighted Age
+                            </span>
+                        </div>
                     </th>
                     <th colSpan={4}>League</th>
                     <th colSpan={2}>W-L</th>
@@ -151,7 +156,7 @@ const LeaguemateLeagues = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        Value
+                        <p>Value</p>
                     </th>
                     <th>
                         <select value={group_age} onChange={(e) => setGroup_age(e.target.value)}>
@@ -163,7 +168,12 @@ const LeaguemateLeagues = (props) => {
                             <option>WR</option>
                             <option>TE</option>
                         </select>
-                        VWA
+                        <div className="tooltip">
+                            <p>VWA</p>
+                            <span className="tooltiptext">
+                                Value Weighted Age
+                            </span>
+                        </div>
                     </th>
                 </tr>
                 {leagues.sort((a, b) => a.index - b.index).map((league, index) =>
