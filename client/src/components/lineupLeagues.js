@@ -51,18 +51,20 @@ const LineupLeagues = (props) => {
                         </tr>
                         {league.isRostersHidden ? null :
                             <tr>
-                                <td colSpan={5}>
+                                <td colSpan={5} className="top">
                                     {league.matchup === undefined ? null :
                                         <Breakdown
                                             starters={league.matchup.starters}
+                                            bench={league.matchup.players.filter(x => !league.matchup.starters.includes(x))}
                                             players_points={league.matchup.players_points}
                                         />
                                     }
                                 </td>
-                                <td colSpan={5}>
+                                <td colSpan={5} className="top">
                                     {league.matchup === undefined ? null :
                                         <Breakdown
                                             starters={league.matchup_opponent.starters}
+                                            bench={league.matchup_opponent.players.filter(x => !league.matchup_opponent.starters.includes(x))}
                                             players_points={league.matchup_opponent.players_points}
                                         />
                                     }

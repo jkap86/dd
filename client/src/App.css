@@ -439,9 +439,11 @@ img.faded {
 
 div.player_nav {
   width: fit-content;
-  margin: auto;
+  margin: 1em auto;
 }
 
 div.player_nav > button {
   font-size: 1em;
+  background-color: inherit;
+  border: none;
 }

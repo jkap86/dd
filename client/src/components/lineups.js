@@ -11,6 +11,7 @@ const Lineups = (props) => {
     const [playersAll, setPlayersAll] = useState([])
     const [starters, setStarters] = useState([])
     const [bench, setBench] = useState([])
+    const [oppPlayers, setOppPlayers] = useState([])
     const [filters, setFilters] = useState({ positions: [], types: [] })
 
     const filterPosition = (e) => {
@@ -36,7 +37,7 @@ const Lineups = (props) => {
     }
 
     const getSearched = (data) => {
-        let s = tab === 'Starters' ? starters : bench
+        let s = tab === 'Starters' ? starters : tab === 'Bench' ? bench : oppPlayers
         if (data) {
             s.map(starter => {
                 return starter.isPlayerHidden = true
@@ -52,14 +53,16 @@ const Lineups = (props) => {
         }
         if (tab === 'Starters') {
             setStarters([...s])
-        } else {
+        } else if (tab === 'Bench') {
             setBench([...s])
+        } else {
+            setOppPlayers([...s])
         }
 
     }
 
     const showLeagues = (player_id) => {
-        const s = tab === 'All' ? playersAll : tab === 'Starters' ? starters : bench
+        const s = tab === 'All' ? playersAll : tab === 'Starters' ? starters : tab === 'Bench' ? bench : oppPlayers
         s.filter(x => x.id === player_id).map(starter => {
             return starter.isLeaguesHidden = !starter.isLeaguesHidden
         })
@@ -68,8 +71,10 @@ const Lineups = (props) => {
         }
         else if (tab === 'Starters') {
             setStarters([...s])
-        } else {
+        } else if (tab === 'Bench') {
             setBench([...s])
+        } else {
+            setOppPlayers([...s])
         }
     }
 
@@ -125,6 +130,15 @@ const Lineups = (props) => {
         })
     }).flat()
 
+    let opponent_players = props.leagues.filter(x => x.matchup_opponent !== undefined).map(league => {
+        return league.matchup_opponent.starters.map(starter => {
+            return {
+                id: starter,
+                league: league
+            }
+        })
+    }).flat()
+
     useEffect(() => {
         let pa = findOcurrences(players_all)
         setPlayersAll(pa)
@@ -132,15 +146,18 @@ const Lineups = (props) => {
         setStarters(s)
         let bp = findOcurrences(bench_players)
         setBench(bp)
+        let op = findOcurrences(opponent_players)
+        setOppPlayers(op)
     }, [props.leagues])
 
-    const roster_group = tab === 'All' ? playersAll : tab === 'Starters' ? starters : bench
+    const roster_group = tab === 'All' ? playersAll : tab === 'Starters' ? starters : tab === 'Bench' ? bench : oppPlayers
 
     return <>
         <div className="player_nav">
             <button className={tab === 'All' ? 'active clickable' : 'clickable'} onClick={() => setTab('All')}>All</button>
             <button className={tab === 'Starters' ? 'active clickable' : 'clickable'} onClick={() => setTab('Starters')}>Starters</button>
             <button className={tab === 'Bench' ? 'active clickable' : 'clickable'} onClick={() => setTab('Bench')}>Bench</button>
+            <button className={tab === 'Opponent' ? 'active clickable' : 'clickable'} onClick={() => setTab('Opponent')}>Opponent</button>
         </div>
         {tab === 'All' ?
             <PlayerShares
@@ -188,7 +205,7 @@ const Lineups = (props) => {
                             let s = starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name
                             return s
                         })}
-                        placeholder={tab === 'Starters' ? 'Search Starters' : 'Search Bench Players'}
+                        placeholder={tab === 'Starters' ? 'Search Starters' : tab === 'Bench' ? 'Search Bench Players' : 'Search Opp Starters'}
                         sendSearched={getSearched}
                     />
 

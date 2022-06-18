@@ -220,7 +220,7 @@ const Leagues = (props) => {
                                     VWA
                                 </p>
                                 <span className="tooltiptext">
-                                    Value Weighted Age
+                                    Value Weighted Avg Age
                                 </span>
                             </div>
                         </th>
