@@ -1,12 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import allPlayers from '../allPlayers.json';
 import player_default from '../player_default.png';
 import LineupLeagues from "./lineupLeagues";
 import Search from "./search";
 import emoji from '../emoji.png';
+import PlayerShares from "./playerShares";
 
 const Lineups = (props) => {
-    const [tab, setTab] = useState('Starters')
+    const [tab, setTab] = useState('All')
+    const [playersAll, setPlayersAll] = useState([])
     const [starters, setStarters] = useState([])
     const [bench, setBench] = useState([])
     const [filters, setFilters] = useState({ positions: [], types: [] })
@@ -53,15 +55,18 @@ const Lineups = (props) => {
         } else {
             setBench([...s])
         }
-        
+
     }
 
     const showLeagues = (player_id) => {
-        const s = tab === 'Starters' ? starters : bench
+        const s = tab === 'All' ? playersAll : tab === 'Starters' ? starters : bench
         s.filter(x => x.id === player_id).map(starter => {
             return starter.isLeaguesHidden = !starter.isLeaguesHidden
         })
-        if (tab === 'Starters') {
+        if (tab === 'All') {
+            setPlayersAll([...s])
+        }
+        else if (tab === 'Starters') {
             setStarters([...s])
         } else {
             setBench([...s])
@@ -93,6 +98,15 @@ const Lineups = (props) => {
         return playerOccurrences
     }
 
+    let players_all = props.leagues.filter(x => x.userRoster.players !== null).map(league => {
+        return league.userRoster.players.map(player => {
+            return {
+                id: player,
+                league: league
+            }
+        })
+    }).flat()
+
     let players = props.leagues.filter(x => x.userRoster.players !== null).map(league => {
         return league.userRoster.starters.map(starter => {
             return {
@@ -111,104 +125,122 @@ const Lineups = (props) => {
         })
     }).flat()
 
-    bench_players = useMemo(() => findOcurrences(bench_players), [props.leagues])
-    if (bench_players !== bench) setBench(bench_players)
+    useEffect(() => {
+        let pa = findOcurrences(players_all)
+        setPlayersAll(pa)
+        let s = findOcurrences(players)
+        setStarters(s)
+        let bp = findOcurrences(bench_players)
+        setBench(bp)
+    }, [props.leagues])
 
-    players = useMemo(() => findOcurrences(players), [props.leagues])
-    if (players !== starters) setStarters(players)
-
-    const roster_group = tab === 'Starters' ? starters : bench
+    const roster_group = tab === 'All' ? playersAll : tab === 'Starters' ? starters : bench
 
     return <>
-        <div className="search_wrapper">
-            <div className="checkboxes">
-                <label className="script">
-                    QB
-                    <input className="clickable" name="QB" onClick={filterPosition} defaultChecked type="checkbox" />
-                </label>
-                <label className="script">
-                    RB
-                    <input className="clickable" name="RB" onChange={filterPosition} defaultChecked type="checkbox" />
-                </label>
-                <label className="script">
-                    WR
-                    <input className="clickable" name="WR" onChange={filterPosition} defaultChecked type="checkbox" />
-                </label>
-                <label className="script">
-                    TE
-                    <input className="clickable" name="TE" onChange={filterPosition} defaultChecked type="checkbox" />
-                </label>
-                <label className="script">
-                    Other
-                    <input className="clickable" name="Other" onChange={filterPosition} defaultChecked type="checkbox" />
-                </label>
-                <br />
-                <label className='script'>
-                    Vets
-                    <input className="clickable" name='V' onChange={(e) => filterYearsExp(e, 'Vets')} defaultChecked type="checkbox" />
-                </label>
-                <label className='script'>
-                    Rookies
-                    <input className="clickable" name='R' onChange={(e) => filterYearsExp(e, 'Rookies')} defaultChecked type="checkbox" />
-                </label>
-            </div>
-            <Search
-                list={roster_group.map(starter => {
-                    let s = starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name
-                    return s
-                })}
-                placeholder={tab === 'Starters' ? 'Search Starters' : 'Search Bench Players'}
-                sendSearched={getSearched}
-            />
+        <div className="player_nav">
+            <button className={tab === 'All' ? 'active clickable' : 'clickable'} onClick={() => setTab('All')}>All</button>
             <button className={tab === 'Starters' ? 'active clickable' : 'clickable'} onClick={() => setTab('Starters')}>Starters</button>
             <button className={tab === 'Bench' ? 'active clickable' : 'clickable'} onClick={() => setTab('Bench')}>Bench</button>
         </div>
-        <div className="view_scrollable">
-            <table className="main">
-                <tbody className="fade_in sticky">
-                    <tr>
-                        <th>Count</th>
-                        <th colSpan={3}>Player</th>
-                        <th>Position</th>
-                        <th>Team</th>
-                        <th>Value</th>
-                    </tr>
-                </tbody>
-                <tbody className="slide_up">
-                    {roster_group.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) &&
-                        !filters.types.includes(x.type)).sort((a, b) => b.count - a.count).map((starter, index) =>
-                            <React.Fragment key={index}>
-                                <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>
-                                    <td>{starter.count}</td>
-                                    <td>
-                                        <img
-                                            style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
-                                            className="thumbnail"
-                                            alt="headshot"
-                                            src={starter.id === '0' ? emoji : `https://sleepercdn.com/content/nfl/players/thumb/${starter.id}.jpg`}
-                                            onError={(e) => { return e.target.src = player_default }}
-                                        />
-                                    </td>
-                                    <td colSpan={2} className="left">{starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name}</td>
-                                    <td>{starter.id === '0' ? null : allPlayers[starter.id].position}</td>
-                                    <td>{starter.id === '0' ? null : allPlayers[starter.id].team === null ? 'FA' : allPlayers[starter.id].team}</td>
-                                    <td>{starter.id === '0' ? null : parseInt(props.matchPlayer_DV(starter.id)).toLocaleString("en-US")}</td>
-                                </tr>
-                                {starter.isLeaguesHidden ? null :
-                                    <tr>
-                                        <td colSpan={7}>
-                                            <LineupLeagues
-                                                leagues={starter.leagues}
-                                                matchPlayer_DV={props.matchPlayer_DV}
-                                            />
-                                        </td>
-                                    </tr>
-                                }
-                            </React.Fragment>
-                        )}
-                </tbody>
-            </table>
-        </div>
+        {tab === 'All' ?
+            <PlayerShares
+                leagues={props.leagues}
+                user={props.user}
+                matchPlayer_DV={props.matchPlayer_DV}
+                matchPick={props.matchPick}
+            />
+            :
+            <>
+                <div className="search_wrapper">
+                    <div className="checkboxes">
+                        <label className="script">
+                            QB
+                            <input className="clickable" name="QB" onClick={filterPosition} defaultChecked type="checkbox" />
+                        </label>
+                        <label className="script">
+                            RB
+                            <input className="clickable" name="RB" onChange={filterPosition} defaultChecked type="checkbox" />
+                        </label>
+                        <label className="script">
+                            WR
+                            <input className="clickable" name="WR" onChange={filterPosition} defaultChecked type="checkbox" />
+                        </label>
+                        <label className="script">
+                            TE
+                            <input className="clickable" name="TE" onChange={filterPosition} defaultChecked type="checkbox" />
+                        </label>
+                        <label className="script">
+                            Other
+                            <input className="clickable" name="Other" onChange={filterPosition} defaultChecked type="checkbox" />
+                        </label>
+                        <br />
+                        <label className='script'>
+                            Vets
+                            <input className="clickable" name='V' onChange={(e) => filterYearsExp(e, 'Vets')} defaultChecked type="checkbox" />
+                        </label>
+                        <label className='script'>
+                            Rookies
+                            <input className="clickable" name='R' onChange={(e) => filterYearsExp(e, 'Rookies')} defaultChecked type="checkbox" />
+                        </label>
+                    </div>
+                    <Search
+                        list={roster_group.map(starter => {
+                            let s = starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name
+                            return s
+                        })}
+                        placeholder={tab === 'Starters' ? 'Search Starters' : 'Search Bench Players'}
+                        sendSearched={getSearched}
+                    />
+
+                </div>
+                <div className="view_scrollable">
+                    <table className="main">
+                        <tbody className="fade_in sticky">
+                            <tr>
+                                <th>Count</th>
+                                <th colSpan={3}>Player</th>
+                                <th>Position</th>
+                                <th>Team</th>
+                                <th>Value</th>
+                            </tr>
+                        </tbody>
+                        <tbody className="slide_up">
+                            {roster_group.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) &&
+                                !filters.types.includes(x.type)).sort((a, b) => b.count - a.count).map((starter, index) =>
+                                    <React.Fragment key={index}>
+                                        <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>
+                                            <td>{starter.count}</td>
+                                            <td>
+                                                <img
+                                                    style={{ animation: `rotation ${Math.random() * 10 + 2}s infinite linear` }}
+                                                    className="thumbnail"
+                                                    alt="headshot"
+                                                    src={starter.id === '0' ? emoji : `https://sleepercdn.com/content/nfl/players/thumb/${starter.id}.jpg`}
+                                                    onError={(e) => { return e.target.src = player_default }}
+                                                />
+                                            </td>
+                                            <td colSpan={2} className="left">{starter.id === '0' ? 'Empty' : allPlayers[starter.id].full_name}</td>
+                                            <td>{starter.id === '0' ? null : allPlayers[starter.id].position}</td>
+                                            <td>{starter.id === '0' ? null : allPlayers[starter.id].team === null ? 'FA' : allPlayers[starter.id].team}</td>
+                                            <td>{starter.id === '0' ? null : parseInt(props.matchPlayer_DV(starter.id)).toLocaleString("en-US")}</td>
+                                        </tr>
+                                        {starter.isLeaguesHidden ? null :
+                                            <tr>
+                                                <td colSpan={7}>
+                                                    <LineupLeagues
+                                                        leagues={starter.leagues}
+                                                        matchPlayer_DV={props.matchPlayer_DV}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </React.Fragment>
+                                )}
+                        </tbody>
+                    </table>
+                </div>
+            </>
+        }
     </>
 }
 export default Lineups;

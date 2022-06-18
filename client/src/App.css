@@ -436,3 +436,12 @@ img.faded {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+div.player_nav {
+  width: fit-content;
+  margin: auto;
+}
+
+div.player_nav > button {
+  font-size: 1em;
+}
