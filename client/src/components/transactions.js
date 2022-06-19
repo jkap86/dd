@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import allPlayers from '../allPlayers.json';
 import Search from "./search";
+import emoji from '../emoji.png';
 
 const Transactions = (props) => {
     const [manager1, setManager1] = useState(null)
@@ -159,7 +160,7 @@ const Transactions = (props) => {
             />
             <ol className="page_numbers">
                 {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false).length / 50)).keys()).map(key => key + 1).map(page_number =>
-                    <li key={page_number} onClick={() => SetPage(page_number)}>
+                    <li className={page === page_number ? 'active clickable' : 'clickable'} key={page_number} onClick={() => SetPage(page_number)}>
                         {page_number}
                     </li>
                 )}
@@ -167,7 +168,7 @@ const Transactions = (props) => {
         </div>
 
         <table className="main">
-            <tbody>
+            <tbody className="fade_in">
                 <tr>
                     <th colSpan={2}>Date</th>
                     <th colSpan={2}>League</th>
@@ -175,19 +176,39 @@ const Transactions = (props) => {
                     <th colSpan={2}></th>
                 </tr>
             </tbody>
-            <tbody>
+            <tbody className="slide_up">
                 {transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).map((transaction, index) =>
-                    <tr key={index}>
+                    <tr className="hover" key={index}>
                         <td colSpan={2}>{new Date(transaction.status_updated).toLocaleString()}</td>
-                        <td colSpan={2}>{transaction.league_name}</td>
+                        <td colSpan={2}>
+                            <div className="image_container">
+                                <img
+                                    style={{
+                                        animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
+                                    }}
+                                    className="thumbnail faded"
+                                    alt="avatar"
+                                    src={transaction.league_avatar === null ? emoji : `https://sleepercdn.com/avatars/${transaction.league_avatar}`}
+                                />
+                                <p className="image">{transaction.league_name}</p>
+                            </div>
+                        </td>
                         <td>{transaction.type.replace('_', ' ')}</td>
                         <td colSpan={2}>
                             <div className="transaction">
                                 {transaction.users.map((user, index) =>
                                     <div className="transaction_user" key={index}>
-                                        <p className="header_user">
-                                            {user.username}
-                                        </p>
+                                        <div className="image_container">
+                                            <img
+                                                style={{
+                                                    animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
+                                                }}
+                                                className="thumbnail faded"
+                                                alt="avatar"
+                                                src={user.avatar === null ? emoji : `https://sleepercdn.com/avatars/${user.avatar}`}
+                                            />
+                                            <p className="image">{user.username}</p>
+                                        </div>
                                         {transaction.adds === null ? null : Object.keys(transaction.adds)
                                             .filter(x => transaction.adds[x] === user.roster_id).map((player, index) =>
                                                 <p className="green" key={index}>

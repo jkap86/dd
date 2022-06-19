@@ -47,6 +47,7 @@ div.search_wrapper {
   top: 0;
   text-align: center;
   background-color: var(--primary-color);
+  z-index: 3;
 }
 
 .clickable:hover {
@@ -129,7 +130,7 @@ table.main {
 tr.hover:hover,
 tr.hover.active {
   background-color: var(--fifth-color);
-  color: var(--third-color);
+  color: var(--secondary-color);
 }
 
 table.secondary {
@@ -397,8 +398,12 @@ p.image {
   left: 0;
   right: 0;
   z-index: 1;
-  color: var(--fourth-color);
+  color: var(--fifth-color);
   font-weight: 900;
+}
+
+tr.hover:hover p.image {
+  color: var(--secondary-color);
 }
 
 tr.hover2:hover p.image,
@@ -489,8 +494,19 @@ p.green {
 
 p.red {
   color: red;
+  text-shadow: none;
+}
+
+tr.hover:hover p.green {
+  color: green;
 }
 
 p.green {
   color: greenyellow;
+  text-shadow: none;
+}
+
+li.active {
+  color: var(--fourth-color);
+  font-weight: 900;
 }
