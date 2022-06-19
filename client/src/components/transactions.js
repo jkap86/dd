@@ -125,25 +125,26 @@ const Transactions = (props) => {
 
 
     return <>
-        <div className="checkboxes">
-            <label className="script">
-                Free Agent
-                <input className="clickable" onChange={(e) => filterType(e, 'free_agent')} defaultChecked type="checkbox" />
-            </label>
-            <label className="script">
-                Waiver
-                <input className="clickable" onChange={(e) => filterType(e, 'waiver')} defaultChecked type="checkbox" />
-            </label>
-            <label className="script">
-                Trade
-                <input className="clickable" onChange={(e) => filterType(e, 'trade')} defaultChecked type="checkbox" />
-            </label>
-            <label className="script">
-                Commish
-                <input className="clickable" onChange={(e) => filterType(e, 'commissioner')} defaultChecked type="checkbox" />
-            </label>
-        </div>
+
         <div className="search_wrapper">
+            <div className="checkboxes">
+                <label className="script">
+                    Free Agent
+                    <input className="clickable" onChange={(e) => filterType(e, 'free_agent')} defaultChecked type="checkbox" />
+                </label>
+                <label className="script">
+                    Waiver
+                    <input className="clickable" onChange={(e) => filterType(e, 'waiver')} defaultChecked type="checkbox" />
+                </label>
+                <label className="script">
+                    Trade
+                    <input className="clickable" onChange={(e) => filterType(e, 'trade')} defaultChecked type="checkbox" />
+                </label>
+                <label className="script">
+                    Commish
+                    <input className="clickable" onChange={(e) => filterType(e, 'commissioner')} defaultChecked type="checkbox" />
+                </label>
+            </div>
             <Search
                 list={list_managers}
                 placeholder="Manager"
@@ -156,30 +157,31 @@ const Transactions = (props) => {
                 sendSearched={(data) => getSearched(data, 'P')}
                 value={null}
             />
+            <ol className="page_numbers">
+                {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false).length / 50)).keys()).map(key => key + 1).map(page_number =>
+                    <li key={page_number} onClick={() => SetPage(page_number)}>
+                        {page_number}
+                    </li>
+                )}
+            </ol>
         </div>
-        <ol className="page_numbers">
-            {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false).length / 50)).keys()).map(key => key + 1).map(page_number =>
-                <li key={page_number} onClick={() => SetPage(page_number)}>
-                    {page_number}
-                </li>
-            )}
-        </ol>
+
         <table className="main">
             <tbody>
                 <tr>
-                    <th>Date</th>
-                    <th>League</th>
+                    <th colSpan={2}>Date</th>
+                    <th colSpan={2}>League</th>
                     <th>Type</th>
-                    <th colSpan={3}></th>
+                    <th colSpan={2}></th>
                 </tr>
             </tbody>
             <tbody>
                 {transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).map((transaction, index) =>
                     <tr key={index}>
-                        <td>{new Date(transaction.status_updated).toLocaleString()}</td>
-                        <td>{transaction.league_name}</td>
+                        <td colSpan={2}>{new Date(transaction.status_updated).toLocaleString()}</td>
+                        <td colSpan={2}>{transaction.league_name}</td>
                         <td>{transaction.type.replace('_', ' ')}</td>
-                        <td colSpan={3}>
+                        <td colSpan={2}>
                             <div className="transaction">
                                 {transaction.users.map((user, index) =>
                                     <div className="transaction_user" key={index}>
@@ -200,13 +202,13 @@ const Transactions = (props) => {
                                         )}
                                         {transaction.drops === null ? null : Object.keys(transaction.drops)
                                             .filter(x => transaction.drops[x] === user.roster_id).map((player, index) =>
-                                                <p className="green" key={index}>
+                                                <p className="red" key={index}>
                                                     - {allPlayers[player].full_name}
                                                 </p>
                                             )
                                         }
                                         {transaction.draft_picks.filter(x => x.previous_owner_id === user.roster_id).map((pick, index) =>
-                                            <p className="green" key={index}>
+                                            <p className="red" key={index}>
                                                 - {`${pick.season} Round ${pick.round} (${pick.original_username})`}
                                             </p>
                                         )}

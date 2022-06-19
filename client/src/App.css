@@ -46,6 +46,7 @@ div.search_wrapper {
   position: sticky;
   top: 0;
   text-align: center;
+  background-color: var(--primary-color);
 }
 
 .clickable:hover {
@@ -172,6 +173,11 @@ div.nav_container {
   width: 100%;
   display: inline-flex;
   justify-content: center;
+}
+
+form {
+  display: inline;
+  margin: 1em;
 }
 
 button.nav {
@@ -456,11 +462,35 @@ ol.page_numbers {
   width: 100%;
   overflow-x: scroll;
   margin: auto;
-  padding-bottom: 1em;
+  padding: 1em;
 }
 
 ol.page_numbers li {
   list-style: none;
   display: inline;
   padding: 1em;
+}
+
+div.transaction {
+  height: fit-content;
+  max-height: 15em;
+  overflow-y: scroll;
+}
+
+div.transaction_user {
+  width: fit-content;
+  margin: auto;
+}
+
+p.red,
+p.green {
+  text-align: left;
+}
+
+p.red {
+  color: red;
+}
+
+p.green {
+  color: greenyellow;
 }
