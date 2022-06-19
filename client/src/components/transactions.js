@@ -191,7 +191,7 @@ const Transactions = (props) => {
                 value={''}
             />
             <ol className="page_numbers">
-                {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false).length / 50)).keys()).map(key => key + 1).map(page_number =>
+                {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).length / 50)).keys()).map(key => key + 1).map(page_number =>
                     <li className={page === page_number ? 'active clickable' : 'clickable'} key={page_number} onClick={() => SetPage(page_number)}>
                         {page_number}
                     </li>
