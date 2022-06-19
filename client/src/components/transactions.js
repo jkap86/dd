@@ -202,16 +202,16 @@ const Transactions = (props) => {
         <table className="main">
             <tbody className="fade_in">
                 <tr>
-                    <th colSpan={2}>Date</th>
+                    <th colSpan={1}>Date</th>
                     <th colSpan={2}>League</th>
                     <th>Type</th>
-                    <th colSpan={2}></th>
+                    <th colSpan={3}></th>
                 </tr>
             </tbody>
             <tbody className="slide_up">
                 {transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).map((transaction, index) =>
                     <tr className="hover" key={index}>
-                        <td colSpan={2}>{new Date(transaction.status_updated).toLocaleString()}</td>
+                        <td colSpan={1}>{new Date(transaction.status_updated).toLocaleString()}</td>
                         <td colSpan={2}>
                             <div className="image_container">
                                 <img
@@ -226,7 +226,7 @@ const Transactions = (props) => {
                             </div>
                         </td>
                         <td>{transaction.type.replace('_', ' ')}</td>
-                        <td colSpan={2}>
+                        <td colSpan={3}>
                             <div className="transaction">
                                 {transaction.users.map((user, index) =>
                                     <div className="transaction_user" key={index}>

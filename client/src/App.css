@@ -498,6 +498,8 @@ div.transaction {
   height: fit-content;
   max-height: 15em;
   overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 div.transaction_user {
@@ -508,6 +510,7 @@ div.transaction_user {
 p.red,
 p.green {
   text-align: left;
+  font-size: 85%;
 }
 
 p.red {
