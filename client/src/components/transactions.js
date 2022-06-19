@@ -5,6 +5,7 @@ import emoji from '../emoji.png';
 
 const Transactions = (props) => {
     const [manager1, setManager1] = useState('')
+    const [manager2, setManager2] = useState('')
     const [player, setPlayer] = useState('')
     const [transactions, setTransactions] = useState([])
     const [page, SetPage] = useState(1)
@@ -21,16 +22,15 @@ const Transactions = (props) => {
                 t.map(trans => {
                     return trans.isTransactionHidden = true
                 })
+                t.filter(x => x.users.find(y => y.username === data) !== undefined).map(trans => {
+                    return trans.isTransactionHidden = false
+                })
                 if (player !== '') {
-                    t.filter(x => x.users.find(y => y.username === data) !== undefined &&
-                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined) ||
-                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === player) !== undefined)
+                    t.filter(x => x.isTransactionHidden === false &&
+                        (x.adds === null || Object.keys(x.adds).find(y => allPlayers[y].full_name === player) === undefined) &&
+                        (x.drops === null || Object.keys(x.drops).find(y => allPlayers[y].full_name === player) === undefined)
                     ).map(trans => {
-                        return trans.isTransactionHidden = false
-                    })
-                } else {
-                    t.filter(x => x.users.find(y => y.username === data) !== undefined).map(trans => {
-                        return trans.isTransactionHidden = false
+                        return trans.isTransactionHidden = true
                     })
                 }
             } else {
@@ -56,29 +56,32 @@ const Transactions = (props) => {
                 t.map(trans => {
                     return trans.isTransactionHidden = true
                 })
+                t.filter(x =>
+                    (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
+                    (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
+                ).map(trans => {
+                    return trans.isTransactionHidden = false
+                })
+
                 if (manager1 !== '') {
-                    t.filter(x => x.users.find(y => y.username === manager1) !== undefined && (
-                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
-                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
-                    )).map(trans => {
-                        return trans.isTransactionHidden = false
-                    })
-                } else {
-                    t.filter(x =>
-                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
-                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
-                    ).map(trans => {
-                        return trans.isTransactionHidden = false
-                    })
+                    t.filter(x => x.isTransactionHidden === false &&
+                        x.users.find(y => y.username === manager1) === undefined).map(trans => {
+                            return trans.isTransactionHidden = true
+                        })
                 }
             } else {
+                t.map(trans => {
+                    return trans.isTransactionHidden = false
+                })
                 if (manager1 !== '') {
-                    t.map(trans => {
+                    t.filter(x => x.users.find(y => y.username === manager1) === undefined).map(trans => {
                         return trans.isTransactionHidden = true
                     })
-                    t.filter(x => x.users.find(y => y.username === manager1) !== undefined).map(trans => {
-                        return trans.isTransactionHidden = false
-                    })
+                    if (manager2 !== '') {
+                        t.filter(x => x.users.find(y => y.username === manager2) === undefined).map(trans => {
+                            return trans.isTransactionHidden = true
+                        })
+                    }
                 } else {
                     t.map(trans => {
                         return trans.isTransactionHidden = false
@@ -86,6 +89,27 @@ const Transactions = (props) => {
                 }
             }
             setPlayer(data)
+        } else if (type === 'M2') {
+            if (list_managers.includes(data)) {
+                t.filter(x => x.isTransactionHidden === false &&
+                    x.users.find(y => y.username === data) === undefined
+                ).map(trans => {
+                    return trans.isTransactionHidden = true
+                })
+            } else {
+                t.filter(x => x.users.find(y => y.username === manager1) !== undefined).map(trans => {
+                    return trans.isTransactionHidden = false
+                })
+                if (player !== '') {
+                    t.filter(x => x.isTransactionHidden === false &&
+                        (x.adds === null || Object.keys(x.adds).find(y => allPlayers[y].full_name === player) === undefined) &&
+                        (x.drops === null || Object.keys(x.drops).find(y => allPlayers[y].full_name === player) === undefined)
+                    ).map(trans => {
+                        return trans.isTransactionHidden = true
+                    })
+                }
+            }
+            setManager2(data)
         }
         setTransactions([...t])
     }
@@ -152,6 +176,14 @@ const Transactions = (props) => {
                 sendSearched={(data) => getSearched(data, 'M')}
                 value={props.user.display_name}
             />
+            {!list_managers.includes(manager1) ? null :
+                <Search
+                    list={list_managers}
+                    placeholder="Manager 2"
+                    sendSearched={(data) => getSearched(data, 'M2')}
+                    value={''}
+                />
+            }
             <Search
                 list={list_players}
                 placeholder="Players"
