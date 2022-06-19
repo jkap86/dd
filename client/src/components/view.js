@@ -239,6 +239,7 @@ const View = () => {
         transactions.length > 0 ?
           <Transactions
             transactions={transactions.filter(x => leagues.find(y => y.league_id === x.league_id).isLeagueTypeHidden === false)}
+            user={user}
           />
           : <h1>Loading...</h1>
         : null}

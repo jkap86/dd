@@ -22,10 +22,11 @@ const Transactions = (props) => {
                 })
                 if (player !== null) {
                     t.filter(x => x.users.find(y => y.username === data) !== undefined &&
-                        x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined)
-                        .map(trans => {
-                            return trans.isTransactionHidden = false
-                        })
+                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined) ||
+                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === player) !== undefined)
+                    ).map(trans => {
+                        return trans.isTransactionHidden = false
+                    })
                 } else {
                     t.filter(x => x.users.find(y => y.username === data) !== undefined).map(trans => {
                         return trans.isTransactionHidden = false
@@ -36,7 +37,10 @@ const Transactions = (props) => {
                     t.map(trans => {
                         return trans.isTransactionHidden = true
                     })
-                    t.filter(x => x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined).map(trans => {
+                    t.filter(x =>
+                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined) ||
+                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === player) !== undefined)
+                    ).map(trans => {
                         return trans.isTransactionHidden = false
                     })
                 } else {
@@ -52,11 +56,17 @@ const Transactions = (props) => {
                     return trans.isTransactionHidden = true
                 })
                 if (manager1 !== null) {
-                    t.filter(x => x.users.find(y => y.username === manager1) !== undefined && x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined).map(trans => {
+                    t.filter(x => x.users.find(y => y.username === manager1) !== undefined && (
+                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
+                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
+                    )).map(trans => {
                         return trans.isTransactionHidden = false
                     })
                 } else {
-                    t.filter(x => x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined).map(trans => {
+                    t.filter(x =>
+                        (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
+                        (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
+                    ).map(trans => {
                         return trans.isTransactionHidden = false
                     })
                 }
@@ -98,11 +108,21 @@ const Transactions = (props) => {
 
     list_managers = Array.from(new Set(list_managers))
 
-    let list_players = Array.from(new Set(transactions.filter(x => x.isTransactionHidden === false && x.adds !== null).map(transaction => {
+    let adds = transactions.filter(x => x.isTransactionHidden === false && x.adds !== null).map(transaction => {
         return Object.keys(transaction.adds).map(player => {
             return allPlayers[player].full_name
         })
-    }).flat()))
+    }).flat()
+
+    let drops = transactions.filter(x => x.isTransactionHidden === false && x.drops !== null).map(transaction => {
+        return Object.keys(transaction.drops).map(player => {
+            return allPlayers[player].full_name
+        })
+    }).flat()
+
+    let list_players = Array.from(new Set([...adds, ...drops].flat()))
+
+
 
     return <>
         <div className="checkboxes">
@@ -128,11 +148,13 @@ const Transactions = (props) => {
                 list={list_managers}
                 placeholder="Manager"
                 sendSearched={(data) => getSearched(data, 'M')}
+                value={props.user.display_name}
             />
             <Search
                 list={list_players}
                 placeholder="Players"
                 sendSearched={(data) => getSearched(data, 'P')}
+                value={null}
             />
         </div>
         <ol className="page_numbers">
