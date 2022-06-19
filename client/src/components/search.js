@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 const Search = (props) => {
-    const [searched, setSearched] = useState(null)
+    const [searched, setSearched] = useState('')
 
     const handleClear = () => {
-        setSearched(null)
+        setSearched('')
     }
 
     useEffect(() => {

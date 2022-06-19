@@ -4,8 +4,8 @@ import Search from "./search";
 import emoji from '../emoji.png';
 
 const Transactions = (props) => {
-    const [manager1, setManager1] = useState(null)
-    const [player, setPlayer] = useState(null)
+    const [manager1, setManager1] = useState('')
+    const [player, setPlayer] = useState('')
     const [transactions, setTransactions] = useState([])
     const [page, SetPage] = useState(1)
     const [filters, setFilters] = useState({ types: [] })
@@ -21,7 +21,7 @@ const Transactions = (props) => {
                 t.map(trans => {
                     return trans.isTransactionHidden = true
                 })
-                if (player !== null) {
+                if (player !== '') {
                     t.filter(x => x.users.find(y => y.username === data) !== undefined &&
                         (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === player) !== undefined) ||
                         (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === player) !== undefined)
@@ -34,7 +34,7 @@ const Transactions = (props) => {
                     })
                 }
             } else {
-                if (player !== null) {
+                if (player !== '') {
                     t.map(trans => {
                         return trans.isTransactionHidden = true
                     })
@@ -56,7 +56,7 @@ const Transactions = (props) => {
                 t.map(trans => {
                     return trans.isTransactionHidden = true
                 })
-                if (manager1 !== null) {
+                if (manager1 !== '') {
                     t.filter(x => x.users.find(y => y.username === manager1) !== undefined && (
                         (x.adds !== null && Object.keys(x.adds).find(y => allPlayers[y].full_name === data) !== undefined) ||
                         (x.drops !== null && Object.keys(x.drops).find(y => allPlayers[y].full_name === data) !== undefined)
@@ -72,7 +72,7 @@ const Transactions = (props) => {
                     })
                 }
             } else {
-                if (manager1 !== null) {
+                if (manager1 !== '') {
                     t.map(trans => {
                         return trans.isTransactionHidden = true
                     })
@@ -156,7 +156,7 @@ const Transactions = (props) => {
                 list={list_players}
                 placeholder="Players"
                 sendSearched={(data) => getSearched(data, 'P')}
-                value={null}
+                value={''}
             />
             <ol className="page_numbers">
                 {Array.from(Array(Math.ceil(transactions.filter(x => x.isTransactionHidden === false).length / 50)).keys()).map(key => key + 1).map(page_number =>

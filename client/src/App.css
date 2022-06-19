@@ -323,7 +323,6 @@ div.checkboxes {
   width: fit-content;
   margin: auto;
   text-align: center;
-  margin-top: 2em;
 }
 
 input[type="checkbox"] {
@@ -452,13 +451,14 @@ img.faded {
 
 div.player_nav {
   width: fit-content;
-  margin: 1em auto;
+  margin: 0 auto;
 }
 
 div.player_nav>button {
   font-size: 1em;
   background-color: inherit;
   border: none;
+  margin: 1em;
 }
 
 ol.page_numbers {
