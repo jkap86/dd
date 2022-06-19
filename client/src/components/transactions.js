@@ -119,6 +119,7 @@ const Transactions = (props) => {
             }
             setManager2(data)
         }
+        SetPage(1)
         setTransactions([...t])
     }
 
