@@ -25,13 +25,13 @@ const PlayerShares = (props) => {
                 p = t ? p.sort((a, b) => parseInt(a.count) - parseInt(b.count)) : p.sort((a, b) => parseInt(b.count) - parseInt(a.count))
                 break;
             case 'Age':
-                p = t ? p.sort((a, b) => allPlayers[b.id].age - allPlayers[a.id].age ) : p.sort((a, b) => allPlayers[a.id].age - allPlayers[b.id].age )
+                p = t ? p.sort((a, b) => allPlayers[b.id].age - allPlayers[a.id].age) : p.sort((a, b) => allPlayers[a.id].age - allPlayers[b.id].age)
                 break;
             case 'Yrs_Exp':
                 p = t ? p.sort((a, b) => allPlayers[b.id].years_exp - allPlayers[a.id].years_exp) : p.sort((a, b) => allPlayers[a.id].years_exp - allPlayers[b.id].years_exp)
                 break;
             case 'Record':
-                p = t ? p.sort((a, b) => (a.wins/(a.wins + a.losses) - (b.wins/(b.wins + b.losses)))) : p.sort((a, b) => (b.wins/(b.wins + b.losses) - (a.wins/(a.wins + a.losses))))
+                p = t ? p.sort((a, b) => (a.wins / (a.wins + a.losses) - (b.wins / (b.wins + b.losses)))) : p.sort((a, b) => (b.wins / (b.wins + b.losses) - (a.wins / (a.wins + a.losses))))
                 break;
             case 'Value':
                 p = t ? p.sort((a, b) => parseInt(props.matchPlayer_DV(a.id)) - parseInt(props.matchPlayer_DV(b.id)))
@@ -73,7 +73,6 @@ const PlayerShares = (props) => {
     }
 
     const getSearched = (data) => {
-        console.log(data)
         const p = players
         if (data) {
             p.map(player => {

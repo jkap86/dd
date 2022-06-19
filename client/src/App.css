@@ -311,7 +311,8 @@ em {
   text-shadow: none;
 }
 
-span.checkboxes {
+span.checkboxes,
+div.checkboxes {
   width: fit-content;
   margin: auto;
   text-align: center;
@@ -349,6 +350,7 @@ input[type="checkbox"]:checked::before {
 
 label.script {
   display: inline-flex;
+  align-items: center;
   flex-direction: column;
   margin: .25em 1em;
   text-shadow: 0 0 .1em var(--third-color);
@@ -442,8 +444,23 @@ div.player_nav {
   margin: 1em auto;
 }
 
-div.player_nav > button {
+div.player_nav>button {
   font-size: 1em;
   background-color: inherit;
   border: none;
+}
+
+ol.page_numbers {
+  max-width: 1000px;
+  min-width: 250px;
+  width: 100%;
+  overflow-x: scroll;
+  margin: auto;
+  padding-bottom: 1em;
+}
+
+ol.page_numbers li {
+  list-style: none;
+  display: inline;
+  padding: 1em;
 }

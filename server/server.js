@@ -9,6 +9,7 @@ const fs = require('fs')
 const router = express.Router()
 const dv = require('./workers/workerDV')
 const leagues = require('./workers/workerLeagues')
+const transactions = require('./workers/workerTransactions')
 
 app.use(compression())
 app.use(cors());
@@ -17,10 +18,10 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 
 const getAllPlayers = async () => {
-    let allplayers = await axios.get('https://api.sleeper.app/v1/players/nfl', { timeout: 3000 })
-    let ap = JSON.stringify(allplayers.data)
+	let allplayers = await axios.get('https://api.sleeper.app/v1/players/nfl', { timeout: 3000 })
+	let ap = JSON.stringify(allplayers.data)
 	fs.writeFileSync('../client/src/allPlayers.json', ap)
-    app.set('allplayers', ap)
+	app.set('allplayers', ap)
 }
 getAllPlayers()
 setInterval(getAllPlayers, 1000 * 60 * 60 * 24)
@@ -39,6 +40,8 @@ app.get('/dynastyvalues', dv)
 
 
 app.get('/leagues', leagues)
+
+app.get('/transactions', transactions)
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../client/build/index.html'));

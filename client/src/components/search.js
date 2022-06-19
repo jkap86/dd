@@ -20,6 +20,7 @@ const Search = (props) => {
                     <option key={index}>{i}</option>
                 )}
             </datalist>
+            <input type="hidden" />
             <button onClick={handleClear} className="clickable" type="reset">Clear</button>
         </form>
     </>
