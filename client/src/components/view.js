@@ -238,7 +238,10 @@ const View = () => {
       {activeTab === "Transactions" ?
         transactions.length > 0 ?
           <Transactions
-            transactions={transactions.filter(x => leagues.find(y => y.league_id === x.league_id).isLeagueTypeHidden === false)}
+            transactions={
+              transactions.filter(x => leagues.find(y => y.league_id === x.league_id) !== undefined &&
+                leagues.find(y => y.league_id === x.league_id).isLeagueTypeHidden === false)
+            }
             user={user}
           />
           : <h1>Loading...</h1>
