@@ -65,9 +65,17 @@ const Transactions = (props) => {
 
                 if (manager1 !== '') {
                     t.filter(x => x.isTransactionHidden === false &&
-                        x.users.find(y => y.username === manager1) === undefined).map(trans => {
+                        x.users.find(y => y.username === manager1) === undefined
+                    ).map(trans => {
+                        return trans.isTransactionHidden = true
+                    })
+                    if (manager2 !== '') {
+                        t.filter(x => x.isTransactionHidden === false &&
+                            x.users.find(y => y.username === manager2) === undefined
+                        ).map(trans => {
                             return trans.isTransactionHidden = true
                         })
+                    }
                 }
             } else {
                 t.map(trans => {
