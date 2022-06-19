@@ -190,7 +190,7 @@ const PlayerLeagues = (props) => {
 
         {tab !== 'Owned' ? null :
             <table className="secondary">
-                <tbody className="sticky">
+                <tbody className="sticky header2">
                     <tr>
                         <th colSpan={2} onClick={() => sort('League')}>League</th>
                         <th>Status</th>
@@ -268,7 +268,7 @@ const PlayerLeagues = (props) => {
                                 </td>
                             </tr>
                             {league.isRostersHidden ? null :
-                                <tr>
+                                <tr className="tertiary">
                                     <td colSpan={8}>
                                         <Roster
                                             roster={league.userRoster}
@@ -286,7 +286,7 @@ const PlayerLeagues = (props) => {
         }
         {tab !== 'Taken' ? null :
             <table className="secondary">
-                <tbody>
+                <tbody className="sticky header2">
                     <tr>
                         <th colSpan={4}>League</th>
                         <th>Manager</th>
@@ -325,6 +325,8 @@ const PlayerLeagues = (props) => {
                             </div>
                         </th>
                     </tr>
+                </tbody>
+                <tbody>
                     {leagues_taken.map((league, index) =>
                         <React.Fragment key={index}>
                             <tr onClick={() => showRosters_taken(league.league_id)} className={league.isRostersHidden ? 'hover2 clickable' : 'hover2 clickable active'}>
@@ -355,7 +357,7 @@ const PlayerLeagues = (props) => {
                                 </td>
                             </tr>
                             {league.isRostersHidden ? null :
-                                <tr>
+                                <tr className="tertiary">
                                     <td colSpan={5} className="top">
                                         <Roster
                                             roster={league.userRoster}
@@ -380,7 +382,7 @@ const PlayerLeagues = (props) => {
         }
         {tab !== 'Available' ? null :
             <table className="secondary">
-                <tbody>
+                <tbody className="sticky header2">
                     <tr>
                         <th colSpan={2}>League</th>
                         <th>Record</th>
@@ -418,6 +420,8 @@ const PlayerLeagues = (props) => {
                             </div>
                         </th>
                     </tr>
+                </tbody>
+                <tbody>
                     {leagues_available.map((league, index) =>
                         <React.Fragment key={index}>
                             <tr onClick={() => showRosters_available(league.league_id)} className={league.isRostersHidden ? 'hover2 clickable' : 'hover2 clickable active'}>
@@ -441,7 +445,7 @@ const PlayerLeagues = (props) => {
                                 </td>
                             </tr>
                             {league.isRostersHidden || league.userRoster.players === null ? null :
-                                <tr>
+                                <tr className="tertiary">
                                     <td colSpan={7} className="top">
                                         <Roster
                                             roster={league.userRoster}

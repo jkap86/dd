@@ -101,7 +101,7 @@ const LeaguemateLeagues = (props) => {
 
     return <>
         <table className="secondary">
-            <tbody className="sticky">
+            <tbody className="sticky header2">
                 <tr>
                     <th colSpan={7}>{props.leaguemate.username}</th>
                     <th colSpan={4}></th>
@@ -235,7 +235,7 @@ const LeaguemateLeagues = (props) => {
                         </tr>
                         {league.isRostersHidden === true || league.userRoster.players === null ||
                             league.rosters.find(x => x.username === props.leaguemate.username).players === null ? null :
-                            <tr>
+                            <tr className="tertiary">
                                 <td colSpan={9} className="top">
                                     <Roster
                                         roster={league.rosters.find(x => x.username === props.leaguemate.username)}

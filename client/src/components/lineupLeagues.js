@@ -16,13 +16,15 @@ const LineupLeagues = (props) => {
     console.log(leagues)
     return <>
         <table className="secondary">
-            <tbody>
+            <tbody className="sticky header2">
                 <tr>
                     <th colSpan={3}>League</th>
                     <th colSpan={2}>PF</th>
                     <th colSpan={2}>PA</th>
                     <th colSpan={3}>Opponent</th>
                 </tr>
+            </tbody>
+            <tbody>
                 {leagues.map((league, index) =>
                     <React.Fragment key={index}>
                         <tr onClick={() => showBreakdown(league.league_id)} className={league.isRostersHidden ? "hover2 clickable" : "hover2 clickable active"}>
@@ -50,7 +52,7 @@ const LineupLeagues = (props) => {
                             <td colSpan={2} className="left">{league.opponent.username}</td>
                         </tr>
                         {league.isRostersHidden ? null :
-                            <tr>
+                            <tr className="tertiary">
                                 <td colSpan={5} className="top">
                                     {league.matchup === undefined ? null :
                                         <Breakdown

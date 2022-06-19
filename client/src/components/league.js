@@ -156,7 +156,7 @@ const League = (props) => {
 
     return <>
         <table className="secondary">
-            <tbody className="fade_in sticky">
+            <tbody className="fade_in sticky header2">
                 <tr>
                     <th className="clickable" onClick={() => sort('Team')} colSpan={2}>Team</th>
                     <th className="clickable" onClick={() => sort('Record')}>Record</th>
@@ -225,7 +225,7 @@ const League = (props) => {
                             <td>{getAge(roster.roster_id)}</td>
                         </tr>
                         {roster.isRosterHidden === true || roster.players === null ? null :
-                            <tr>
+                            <tr className="tertiary">
                                 <td colSpan={7}>
                                     <Roster
                                         roster={roster}
