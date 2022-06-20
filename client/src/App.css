@@ -180,6 +180,7 @@ table.rostercolumn {
   background-color: var(--fourth-color);
   color: var(--third-color);
   margin: 1em;
+  border-spacing: 0;
 }
 
 table.rostercolumn>tbody>tr>th {
@@ -334,6 +335,10 @@ em {
   color: var(--fourth-color);
   font-weight: 900;
   text-shadow: none;
+}
+
+em.age {
+  font-weight: inherit;
 }
 
 span.checkboxes,
@@ -532,4 +537,10 @@ p.green {
 li.active {
   color: var(--fourth-color);
   font-weight: 900;
+}
+
+tr.hover3:hover {
+  background-color: var(--primary-color);
+  filter: brightness(2);
+  text-shadow: none;
 }

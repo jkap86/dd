@@ -31,13 +31,22 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>Starters</th>
                                                     <th>
                                                         {props.roster.starters.filter(x => x !== '0').reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                                     </th>
                                                 </tr>
                                                 {props.roster.starters.map((player, index) =>
-                                                    <tr key={index}>
+                                                    <tr className='hover3' key={index}>
+                                                        <td className='black'>
+                                                            {
+                                                                player === '0' ? null :
+                                                                    <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                        {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                                    </em>
+                                                            }
+                                                        </td>
                                                         <td className='left'>
                                                             {
                                                                 player === '0' ? <span>empty</span> : allPlayers[player].position +
@@ -56,6 +65,7 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>Bench</th>
                                                     <th>
                                                         {props.roster.players.filter(x => !props.roster.starters.includes(x) && (props.roster.taxi === null ||
@@ -68,7 +78,12 @@ const Roster = (props) => {
                                                     !props.roster.taxi.includes(x)) && (props.roster.reserve === null ||
                                                         !props.roster.reserve.includes(x))).sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a))
                                                     .map((player, index) =>
-                                                        <tr key={index}>
+                                                        <tr className='hover3' key={index}>
+                                                            <td className='black'>
+                                                                <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                    {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                                </em>
+                                                            </td>
                                                             <td className='left'>
                                                                 {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                             </td>
@@ -85,13 +100,19 @@ const Roster = (props) => {
                                             <table className='rostercolumn'>
                                                 <tbody>
                                                     <tr>
+                                                        <th>Age</th>
                                                         <th>Taxi</th>
                                                         <th>
                                                             {props.roster.taxi.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                                         </th>
                                                     </tr>
-                                                    {props.roster.taxi.map((player, index) =>
-                                                        <tr key={index}>
+                                                    {props.roster.taxi.sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
+                                                        <tr className='hover3' key={index}>
+                                                            <td className='black'>
+                                                                <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                    {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                                </em>
+                                                            </td>
                                                             <td className='left'>
                                                                 {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                             </td>
@@ -109,13 +130,19 @@ const Roster = (props) => {
                                             <table className='rostercolumn'>
                                                 <tbody>
                                                     <tr>
+                                                        <th>Age</th>
                                                         <th>IR</th>
                                                         <th>
                                                             {props.roster.reserve.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0).toLocaleString("en-US")}
                                                         </th>
                                                     </tr>
-                                                    {props.roster.reserve.map((player, index) =>
-                                                        <tr key={index}>
+                                                    {props.roster.reserve.sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
+                                                        <tr className='hover3' key={index}>
+                                                            <td className='black'>
+                                                                <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                    {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                                </em>
+                                                            </td>
                                                             <td className='left'>
                                                                 {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                             </td>
@@ -137,6 +164,7 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>QB</th>
                                                     <th>
                                                         {
@@ -146,7 +174,12 @@ const Roster = (props) => {
                                                     </th>
                                                 </tr>
                                                 {props.roster.players.filter(x => allPlayers[x].position === 'QB').sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
-                                                    <tr key={index}>
+                                                    <tr className='hover3' key={index}>
+                                                        <td className='black'>
+                                                            <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                            </em>
+                                                        </td>
                                                         <td className='left'>
                                                             {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                         </td>
@@ -162,6 +195,7 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>RB</th>
                                                     <th>
                                                         {
@@ -171,7 +205,12 @@ const Roster = (props) => {
                                                     </th>
                                                 </tr>
                                                 {props.roster.players.filter(x => allPlayers[x].position === 'RB').sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
-                                                    <tr key={index}>
+                                                    <tr className='hover3' key={index}>
+                                                        <td className='black'>
+                                                            <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                            </em>
+                                                        </td>
                                                         <td className='left'>
                                                             {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                         </td>
@@ -187,6 +226,7 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>WR</th>
                                                     <th>
                                                         {
@@ -196,7 +236,12 @@ const Roster = (props) => {
                                                     </th>
                                                 </tr>
                                                 {props.roster.players.filter(x => allPlayers[x].position === 'WR').sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
-                                                    <tr key={index}>
+                                                    <tr className='hover3' key={index}>
+                                                        <td className='black'>
+                                                            <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                            </em>
+                                                        </td>
                                                         <td className='left'>
                                                             {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                         </td>
@@ -212,6 +257,7 @@ const Roster = (props) => {
                                         <table className='rostercolumn'>
                                             <tbody>
                                                 <tr>
+                                                    <th>Age</th>
                                                     <th>TE</th>
                                                     <th>
                                                         {
@@ -221,7 +267,12 @@ const Roster = (props) => {
                                                     </th>
                                                 </tr>
                                                 {props.roster.players.filter(x => allPlayers[x].position === 'TE').sort((a, b) => props.matchPlayer_DV(b) - props.matchPlayer_DV(a)).map((player, index) =>
-                                                    <tr key={index}>
+                                                    <tr className='hover3' key={index}>
+                                                        <td className='black'>
+                                                            <em className='age' style={{ filter: `invert(${(-allPlayers[player].age + 20) * 4 + 100}%) brightness(2)` }}>
+                                                                {allPlayers[player].age === null ? '-' : `${allPlayers[player].age} yrs`}
+                                                            </em>
+                                                        </td>
                                                         <td className='left'>
                                                             {`${allPlayers[player].position} ${allPlayers[player].full_name}`}
                                                         </td>
@@ -245,7 +296,7 @@ const Roster = (props) => {
                                                 <th>{props.roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0).toLocaleString("en-US")}</th>
                                             </tr>
                                             {props.roster.draft_picks.sort((a, b) => a.season - b.season || a.round - b.round).map((pick, index) =>
-                                                <tr key={index}>
+                                                <tr className='hover3' key={index}>
                                                     <td>{pick.season} Round {pick.round}</td>
                                                     <td className='black'>
                                                         <em style={{ filter: `invert(${(props.matchPick(pick.season, pick.round) / 200) + 50}%) brightness(2)` }}>

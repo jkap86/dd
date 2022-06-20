@@ -289,7 +289,11 @@ const PlayerShares = (props) => {
                                     </td>
                                     <td colSpan={2}>{player.fpts}</td>
                                     <td colSpan={2}>{player.fpts_against}</td>
-                                    <td colSpan={2}>{parseInt(props.matchPlayer_DV(player.id)).toLocaleString("en-US")}</td>
+                                    <td colSpan={2}>
+                                        <em style={{ filter: `invert(${(props.matchPlayer_DV(player.id) / 200) + 50}%) brightness(2)` }}>
+                                            {props.matchPlayer_DV(player.id)}
+                                        </em>
+                                    </td>
                                 </tr>
                                 {player.isRostersHidden === true ? null :
                                     <tr>

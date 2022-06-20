@@ -15,7 +15,7 @@ const TransactionLeague = (props) => {
                 <tr>
                     <th colSpan={2}>Passing</th>
                 </tr>
-                {Object.keys(scoring_settings).filter(x => x.includes('pass')).map((key, index) =>
+                {Object.keys(scoring_settings).filter(x => x.includes('pass')).sort((a, b) => scoring_settings[b] - scoring_settings[a]).map((key, index) =>
                     <tr key={index}>
                         <td className="left">{key}</td>
                         <td>{scoring_settings[key].toFixed(2)}</td>
@@ -25,7 +25,7 @@ const TransactionLeague = (props) => {
                 <tr>
                     <th colSpan={2}>Rushing</th>
                 </tr>
-                {Object.keys(scoring_settings).filter(x => x.includes('rush')).map((key, index) =>
+                {Object.keys(scoring_settings).filter(x => x.includes('rush')).sort((a, b) => scoring_settings[b] - scoring_settings[a]).map((key, index) =>
                     <tr key={index}>
                         <td className="left">{key}</td>
                         <td>{scoring_settings[key].toFixed(2)}</td>
@@ -35,7 +35,7 @@ const TransactionLeague = (props) => {
                 <tr>
                     <th colSpan={2}>Receiving</th>
                 </tr>
-                {Object.keys(scoring_settings).filter(x => x.includes('rec') && !x.includes('fum')).map((key, index) =>
+                {Object.keys(scoring_settings).filter(x => x.includes('rec') && !x.includes('fum')).sort((a, b) => scoring_settings[b] - scoring_settings[a]).map((key, index) =>
                     <tr key={index}>
                         <td className="left">{key}</td>
                         <td>{scoring_settings[key].toFixed(2)}</td>
