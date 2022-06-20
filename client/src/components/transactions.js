@@ -168,7 +168,7 @@ const Transactions = (props) => {
 
 
     return <>
-
+        <h2>{transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).length.toLocaleString("en-US")} Transactions</h2>
         <div className="search_wrapper">
             <div className="checkboxes">
                 <label className="script">
