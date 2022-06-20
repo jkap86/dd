@@ -229,7 +229,7 @@ const Transactions = (props) => {
             <tbody className="slide_up">
                 {transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).map((transaction, index) =>
                     <React.Fragment key={index}>
-                        <tr onClick={() => showLeague(transaction.transaction_id)} className={transaction.isLeagueHidden ? 'hover clickable' : 'hover active active'}>
+                        <tr onClick={() => showLeague(transaction.transaction_id)} className={transaction.isLeagueHidden ? 'hover clickable' : 'hover active clickable'}>
                             <td colSpan={1}>{new Date(transaction.status_updated).toLocaleString()}</td>
                             <td colSpan={2}>
                                 <div className="image_container">
