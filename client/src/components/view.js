@@ -243,6 +243,8 @@ const View = () => {
                 leagues.find(y => y.league_id === x.league_id).isLeagueTypeHidden === false)
             }
             user={user}
+            matchPlayer_DV={matchPlayer_DV}
+            matchPick={matchPick}
           />
           : <h1>Loading...</h1>
         : null}

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import allPlayers from '../allPlayers.json';
 import Search from "./search";
 import emoji from '../emoji.png';
+import TransactionLeague from './transactionLeague';
+import Roster from './roster';
 
 const Transactions = (props) => {
     const [manager1, setManager1] = useState('')
@@ -156,6 +158,13 @@ const Transactions = (props) => {
 
     let list_players = Array.from(new Set([...adds, ...drops].flat()))
 
+    const showLeague = (transaction_id) => {
+        let t = transactions
+        t.filter(x => x.transaction_id === transaction_id).map(trans => {
+            return trans.isLeagueHidden = !trans.isLeagueHidden
+        })
+        setTransactions([...t])
+    }
 
 
     return <>
@@ -219,66 +228,86 @@ const Transactions = (props) => {
             </tbody>
             <tbody className="slide_up">
                 {transactions.filter(x => x.isTransactionHidden === false && !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).map((transaction, index) =>
-                    <tr className="hover" key={index}>
-                        <td colSpan={1}>{new Date(transaction.status_updated).toLocaleString()}</td>
-                        <td colSpan={2}>
-                            <div className="image_container">
-                                <img
-                                    style={{
-                                        animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
-                                    }}
-                                    className="thumbnail faded"
-                                    alt="avatar"
-                                    src={transaction.league_avatar === null ? emoji : `https://sleepercdn.com/avatars/${transaction.league_avatar}`}
-                                />
-                                <p className="image">{transaction.league_name}</p>
-                            </div>
-                        </td>
-                        <td>{transaction.type.replace('_', ' ')}</td>
-                        <td colSpan={3}>
-                            <div className="transaction">
-                                {transaction.users.map((user, index) =>
-                                    <div className="transaction_user" key={index}>
-                                        <div className="image_container">
-                                            <img
-                                                style={{
-                                                    animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
-                                                }}
-                                                className="thumbnail faded"
-                                                alt="avatar"
-                                                src={user.avatar === null ? emoji : `https://sleepercdn.com/avatars/${user.avatar}`}
-                                            />
-                                            <p className="image">{user.username}</p>
-                                        </div>
-                                        {transaction.adds === null ? null : Object.keys(transaction.adds)
-                                            .filter(x => transaction.adds[x] === user.roster_id).map((player, index) =>
+                    <React.Fragment key={index}>
+                        <tr onClick={() => showLeague(transaction.transaction_id)} className={transaction.isLeagueHidden ? 'hover clickable' : 'hover active active'}>
+                            <td colSpan={1}>{new Date(transaction.status_updated).toLocaleString()}</td>
+                            <td colSpan={2}>
+                                <div className="image_container">
+                                    <img
+                                        style={{
+                                            animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
+                                        }}
+                                        className="thumbnail faded"
+                                        alt="avatar"
+                                        src={transaction.league_avatar === null ? emoji : `https://sleepercdn.com/avatars/${transaction.league_avatar}`}
+                                    />
+                                    <p className="image">{transaction.league_name}</p>
+                                </div>
+                            </td>
+                            <td>{transaction.type.replace('_', ' ')}</td>
+                            <td colSpan={3}>
+                                <div className="transaction">
+                                    {transaction.users.map((user, index) =>
+                                        <div className="transaction_user" key={index}>
+                                            <div className="image_container">
+                                                <img
+                                                    style={{
+                                                        animation: `rotation ${Math.random() * 10 + 2}s infinite ease-out`,
+                                                    }}
+                                                    className="thumbnail faded"
+                                                    alt="avatar"
+                                                    src={user.avatar === null ? emoji : `https://sleepercdn.com/avatars/${user.avatar}`}
+                                                />
+                                                <p className="image">{user.username}</p>
+                                            </div>
+                                            {transaction.adds === null ? null : Object.keys(transaction.adds)
+                                                .filter(x => transaction.adds[x] === user.roster_id).map((player, index) =>
+                                                    <p className="green" key={index}>
+                                                        + {allPlayers[player].full_name}
+                                                    </p>
+                                                )
+                                            }
+                                            {transaction.draft_picks.filter(x => x.owner_id === user.roster_id).map((pick, index) =>
                                                 <p className="green" key={index}>
-                                                    + {allPlayers[player].full_name}
+                                                    + {`${pick.season} Round ${pick.round} (${pick.original_username})`}
                                                 </p>
-                                            )
-                                        }
-                                        {transaction.draft_picks.filter(x => x.owner_id === user.roster_id).map((pick, index) =>
-                                            <p className="green" key={index}>
-                                                + {`${pick.season} Round ${pick.round} (${pick.original_username})`}
-                                            </p>
-                                        )}
-                                        {transaction.drops === null ? null : Object.keys(transaction.drops)
-                                            .filter(x => transaction.drops[x] === user.roster_id).map((player, index) =>
+                                            )}
+                                            {transaction.drops === null ? null : Object.keys(transaction.drops)
+                                                .filter(x => transaction.drops[x] === user.roster_id).map((player, index) =>
+                                                    <p className="red" key={index}>
+                                                        - {allPlayers[player].full_name}
+                                                    </p>
+                                                )
+                                            }
+                                            {transaction.draft_picks.filter(x => x.previous_owner_id === user.roster_id).map((pick, index) =>
                                                 <p className="red" key={index}>
-                                                    - {allPlayers[player].full_name}
+                                                    - {`${pick.season} Round ${pick.round} (${pick.original_username})`}
                                                 </p>
-                                            )
-                                        }
-                                        {transaction.draft_picks.filter(x => x.previous_owner_id === user.roster_id).map((pick, index) =>
-                                            <p className="red" key={index}>
-                                                - {`${pick.season} Round ${pick.round} (${pick.original_username})`}
-                                            </p>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        </td>
-                    </tr>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </td>
+                        </tr>
+                        {transaction.isLeagueHidden ? null :
+                            <tr>
+                                <td colSpan={2} className="top">
+                                    <TransactionLeague
+                                        scoring_settings={transaction.scoring_settings}
+                                    />
+                                </td>
+                                <td colSpan={5} className="top">
+                                    {transaction.users.map(user =>
+                                        <Roster
+                                            roster={user.roster}
+                                            matchPlayer_DV={props.matchPlayer_DV}
+                                            matchPick={props.matchPick}
+                                        />
+                                    )}
+                                </td>
+                            </tr>
+                        }
+                    </React.Fragment>
                 )}
             </tbody>
         </table>

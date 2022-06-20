@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const Roster = (props) => {
     const [tab, setTab] = useState('Lineup')
-    
+
     return <>
         <table className='tertiary'>
             <caption>
@@ -18,7 +18,7 @@ const Roster = (props) => {
                 </tr>
                 <tr>
                     <th>
-                        {(props.roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
+                        {props.roster.players === null ? 0 : (props.roster.players.reduce((acc, cur) => acc + parseInt(props.matchPlayer_DV(cur)), 0) +
                             props.roster.draft_picks.reduce((acc, cur) => acc + parseInt(props.matchPick(cur.season, cur.round)), 0)).toLocaleString("en-US")}
                     </th>
                 </tr>
