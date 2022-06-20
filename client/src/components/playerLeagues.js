@@ -339,7 +339,7 @@ const PlayerLeagues = (props) => {
                                     />
                                 </td>
                                 <td colSpan={3} className="left">{league.name}</td>
-                                <td>{league.rosters.find(x => x.players.includes(props.player)).username}</td>
+                                <td className="left">{league.rosters.find(x => x.players.includes(props.player)).username}</td>
                                 <td>
                                     <p className="record">
                                         {league.record.wins}-{league.record.losses}{league.record.ties === 0 ? null : `-${league.record.ties}`}

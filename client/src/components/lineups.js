@@ -97,7 +97,10 @@ const Lineups = (props) => {
                 })
             } else {
                 playerOccurrences[index].count++
-                playerOccurrences[index].leagues.push(p.league)
+                if (!playerOccurrences[index].leagues.includes(p.league)) {
+                    playerOccurrences[index].leagues.push(p.league)
+                }
+
             }
         })
         return playerOccurrences
@@ -222,7 +225,24 @@ const Lineups = (props) => {
                             </tr>
                         </tbody>
                         <tbody className="slide_up">
-                            {roster_group.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) &&
+                            {roster_group.filter(x => x.id === '0').map((starter, index) =>
+                                <React.Fragment key={index}>
+                                    <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>
+                                        <td>{starter.count}</td>
+                                        <td colSpan={3}><strong>***Empty***</strong></td>
+                                        <td colSpan={3}></td>
+                                    </tr>
+                                    {starter.isLeaguesHidden ? null :
+                                        <td colSpan={7}>
+                                            <LineupLeagues
+                                                leagues={starter.leagues}
+                                                matchPlayer_DV={props.matchPlayer_DV}
+                                            />
+                                        </td>
+                                    }
+                                </React.Fragment>
+                            )}
+                            {roster_group.filter(x => x.isPlayerHidden === false && x.id !== '0' && !filters.positions.includes(x.position) &&
                                 !filters.types.includes(x.type)).sort((a, b) => b.count - a.count).map((starter, index) =>
                                     <React.Fragment key={index}>
                                         <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>

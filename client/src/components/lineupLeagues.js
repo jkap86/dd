@@ -25,7 +25,7 @@ const LineupLeagues = (props) => {
                 </tr>
             </tbody>
             <tbody>
-                {leagues.map((league, index) =>
+                {leagues.sort((a, b) => a.index - b.index).map((league, index) =>
                     <React.Fragment key={index}>
                         <tr onClick={() => showBreakdown(league.league_id)} className={league.isRostersHidden ? "hover2 clickable" : "hover2 clickable active"}>
                             <td>
