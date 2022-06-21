@@ -13,6 +13,7 @@ const Lineups = (props) => {
     const [bench, setBench] = useState([])
     const [oppPlayers, setOppPlayers] = useState([])
     const [filters, setFilters] = useState({ positions: [], types: [] })
+    const [page, SetPage] = useState(1)
 
     const filterPosition = (e) => {
         let f = filters.positions
@@ -211,7 +212,13 @@ const Lineups = (props) => {
                         placeholder={tab === 'Starters' ? 'Search Starters' : tab === 'Bench' ? 'Search Bench Players' : 'Search Opp Starters'}
                         sendSearched={getSearched}
                     />
-
+                    <ol className="page_numbers">
+                        {Array.from(Array(Math.ceil(roster_group.filter(x => x.isPlayerHidden === false && !filters.types.includes(x.type) && !filters.positions.includes(x.position)).length / 50)).keys()).map(key => key + 1).map(page_number =>
+                            <li className={page === page_number ? 'active clickable' : 'clickable'} key={page_number} onClick={() => SetPage(page_number)}>
+                                {page_number}
+                            </li>
+                        )}
+                    </ol>
                 </div>
                 <div className="view_scrollable">
                     <table className="main">
@@ -243,7 +250,7 @@ const Lineups = (props) => {
                                 </React.Fragment>
                             )}
                             {roster_group.filter(x => x.isPlayerHidden === false && x.id !== '0' && !filters.positions.includes(x.position) &&
-                                !filters.types.includes(x.type)).sort((a, b) => b.count - a.count).map((starter, index) =>
+                                !filters.types.includes(x.type)).slice((page - 1) * 50, ((page - 1) * 50) + 50).sort((a, b) => b.count - a.count).map((starter, index) =>
                                     <React.Fragment key={index}>
                                         <tr onClick={() => showLeagues(starter.id)} className={starter.isLeaguesHidden ? "hover clickable" : "hover clickable active"}>
                                             <td>{starter.count}</td>

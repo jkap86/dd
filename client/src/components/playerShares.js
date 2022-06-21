@@ -9,6 +9,7 @@ const PlayerShares = (props) => {
     const [filters, setFilters] = useState({ positions: [], types: [] })
     const [sortBy, setSortBy] = useState('index')
     const [sortToggle, setSortToggle] = useState(false)
+    const [page, SetPage] = useState(1)
 
     const sort = (sort_by) => {
         const t = sortToggle
@@ -41,6 +42,7 @@ const PlayerShares = (props) => {
                 p = p.sort((a, b) => b.count - a.count)
                 break;
         }
+        SetPage(1)
         setPlayers([...p])
     }
 
@@ -245,6 +247,13 @@ const PlayerShares = (props) => {
                 placeholder="Search Players"
                 sendSearched={getSearched}
             />
+            <ol className="page_numbers">
+                {Array.from(Array(Math.ceil(players.filter(x => x.isPlayerHidden === false && !filters.types.includes(x.type) && !filters.positions.includes(x.position)).length / 50)).keys()).map(key => key + 1).map(page_number =>
+                    <li className={page === page_number ? 'active clickable' : 'clickable'} key={page_number} onClick={() => SetPage(page_number)}>
+                        {page_number}
+                    </li>
+                )}
+            </ol>
         </div>
         <div className="view_scrollable">
             <table className="main">
@@ -262,7 +271,7 @@ const PlayerShares = (props) => {
                 </tbody>
                 <tbody className="slide_up">
                     {players.filter(x => x.isPlayerHidden === false && !filters.positions.includes(x.position) && !filters.types.includes(x.type))
-                        .slice(0, 100).map((player, index) =>
+                        .slice((page - 1) * 50, ((page - 1) * 50) + 50).map((player, index) =>
                             <React.Fragment key={index}>
                                 <tr onClick={() => showLeagues(player.id)} className={player.isRostersHidden ? "hover clickable" : "hover clickable active"}>
                                     <td>{player.count}</td>
