@@ -30,15 +30,15 @@ const getDraftPicks = (league, roster_id, season, traded_picks) => {
 }
 
 const getTransactions = async (username, season) => {
-    const user = await axios.get(`https://api.sleeper.app/v1/user/${username}`)
+    const user = await axios.get(`https://api.sleeper.app/v1/user/${username}`).catch((err) => console.log(err))
     let transactions = []
-    const leagues = await axios.get(`https://api.sleeper.app/v1/user/${user.data.user_id}/leagues/nfl/${season}`)
+    const leagues = await axios.get(`https://api.sleeper.app/v1/user/${user.data.user_id}/leagues/nfl/${season}`).catch((err) => console.log(err))
 
     await Promise.all(leagues.data.map(async league => {
         const [users, rosters, traded_picks] = await Promise.all([
-            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/users`),
-            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/rosters`),
-            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/traded_picks`)
+            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/users`).catch((err) => console.log(err)),
+            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/rosters`).catch((err) => console.log(err)),
+            await axios.get(`https://api.sleeper.app/v1/league/${league.league_id}/traded_picks`).catch((err) => console.log(err))
         ])
         rosters.data = rosters.data.map(roster => {
             const roster_user = users.data.find(x => x.user_id === roster.owner_id)
